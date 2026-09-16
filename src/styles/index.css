@@ -1,0 +1,118 @@
+@import '@fontsource-variable/archivo';
+@import '@fontsource-variable/inter';
+@import 'tailwindcss';
+
+/*
+  Design tokens da Golden Car Service.
+
+  O dourado e cor de ACENTO: CTAs, icones, filetes, numeros e detalhes.
+  Grandes areas douradas deixam a pagina amarelada e barata — o corpo do site
+  e preto com texto branco/cinza, e o dourado aparece pontualmente.
+*/
+@theme {
+  /* Dourado da marca */
+  --color-gold-300: #f2dfa0;
+  --color-gold-400: #e8c46a;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b8952b;
+  --color-gold-700: #8f7320;
+
+  /* Pretos e cinzas escuros */
+  --color-ink-950: #0a0a0a;
+  --color-ink-900: #121212;
+  --color-ink-850: #171717;
+  --color-ink-800: #1c1c1c;
+  --color-ink-700: #2a2a2a;
+  --color-ink-600: #3a3a3a;
+
+  /* Tipografia */
+  --font-display: 'Archivo Variable', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+
+  /* Animacoes de entrada */
+  --animate-reveal: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Compensa a navbar fixa quando a navegacao por ancora rola a pagina */
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Foco visivel e consistente em toda a pagina, sem depender de cada componente */
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+}
+
+@layer utilities {
+  /* Texto com preenchimento em degrade dourado — usado em numeros e palavras-chave */
+  .text-gradient-gold {
+    background-image: linear-gradient(
+      135deg,
+      var(--color-gold-300) 0%,
+      var(--color-gold-500) 45%,
+      var(--color-gold-700) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Filete dourado de 1px usado como borda de cards e separadores */
+  .border-hairline-gold {
+    border-color: color-mix(in srgb, var(--color-gold-500) 22%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

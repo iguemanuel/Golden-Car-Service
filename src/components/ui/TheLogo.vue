@@ -1,37 +1,34 @@
 <script setup lang="ts">
 import { site } from '@/data/site'
 
+import logo from '@/assets/logo.webp'
+
 /**
- * Wordmark da Golden Car Service, reconstruido em texto.
+ * Wordmark da Golden Car Service — imagem real (o cliente enviou em alta
+ * resolucao, com o brilho dourado da placa fisica da oficina).
  *
- * Por que texto e nao a imagem: o PNG que o cliente enviou esta em baixa
- * resolucao, e o wordmark aparece na navbar fixa (visivel o tempo todo) e no
- * footer. Em texto ele fica nitido em qualquer tela, pesa zero e continua
- * legivel para busca e leitor de tela.
+ * O arquivo veio com uma vinheta de brilho bem larga e difusa em volta das
+ * letras (alfa medio, ~60%) — colada direto numa navbar pequena, essa faixa
+ * lia como uma "placa" retangular clara em vez de se misturar ao fundo
+ * escuro do site. Corrigido levantando o contraste so do CANAL ALFA
+ * (`magick -channel A -level 60%,85%`): o brilho difuso (alfa ~0.6) cai pra
+ * quase transparente, as letras (alfa ~0.97) ficam solidas — confirmado
+ * compondo sobre #0a0a0a antes de finalizar, nao so olhando a previa (que
+ * renderiza transparencia sobre fundo escuro, mascarando o problema).
  *
- * PARA TROCAR PELA IMAGEM quando o arquivo em alta chegar: salvar em
- * src/assets/logo.png, importar aqui e trocar o bloco do template por
- * <img :src="logo" :alt="site.name" />. Nenhum outro arquivo muda.
+ * Substitui a reconstrucao em CSS que existia antes (texto + gradiente),
+ * usada so porque o arquivo original estava em baixa resolucao.
  */
 withDefaults(defineProps<{ size?: 'sm' | 'md' }>(), { size: 'md' })
 </script>
 
 <template>
-  <span class="inline-flex flex-col items-center leading-none" :aria-label="site.name" role="img">
-    <span class="flex items-baseline gap-1.5" :class="size === 'sm' ? 'text-lg' : 'text-xl sm:text-2xl'">
-      <!-- "Golden" em italico com o degrade dourado do logo original -->
-      <span class="text-gradient-gold font-display font-extrabold italic">Golden</span>
-      <span class="font-display font-medium tracking-tight text-white">Car Service</span>
-    </span>
-
-    <!-- Filete + CAPM, a assinatura embaixo do wordmark -->
-    <span
-      class="mt-1 flex w-full items-center gap-1.5"
-      :class="size === 'sm' ? 'text-[7px]' : 'text-[8px]'"
-    >
-      <span class="h-px flex-1 bg-gold-600/60"></span>
-      <span class="font-display font-bold tracking-[0.35em] text-gold-500">CAPM</span>
-      <span class="h-px flex-1 bg-gold-600/60"></span>
-    </span>
-  </span>
+  <img
+    :src="logo"
+    :alt="site.name"
+    :class="size === 'sm' ? 'h-6' : 'h-8 sm:h-9'"
+    class="w-auto object-contain"
+    width="700"
+    height="173"
+  />
 </template>

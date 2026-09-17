@@ -8,6 +8,7 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
 import { fullAddress, site } from '@/data/site'
 import { instagramMedia } from '@/data/instagramMedia'
 import { useWhatsApp } from '@/composables/useWhatsApp'
+import { STAGGER_STEP } from '@/utils/motion'
 
 const { open } = useWhatsApp()
 
@@ -109,7 +110,7 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
         </RevealOnScroll>
 
         <!-- Dados de contato + mapa -->
-        <RevealOnScroll :delay="120">
+        <RevealOnScroll :delay="STAGGER_STEP">
           <div class="flex flex-col gap-8">
             <ul class="flex flex-col gap-4 text-neutral-300">
               <li>
@@ -163,7 +164,7 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
         Instagram logo abaixo, para os dois blocos "extra" da secao lerem
         como parte do mesmo padrao visual.
       -->
-      <RevealOnScroll :delay="160">
+      <RevealOnScroll :delay="STAGGER_STEP * 2">
         <div class="mt-16">
           <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -197,7 +198,7 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
         do Instagram. Some sozinha enquanto instagramMedia estiver vazio
         (ver o comentario em src/data/instagramMedia.ts).
       -->
-      <RevealOnScroll v-if="instagramMedia.length > 0" :delay="240">
+      <RevealOnScroll v-if="instagramMedia.length > 0" v-slot="{ revealed }" :delay="STAGGER_STEP * 3">
         <div class="mt-20 border-t border-ink-700/60 pt-16">
           <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -231,9 +232,21 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
               :key="item.src"
               class="aspect-[3/4] overflow-hidden rounded-xl border border-ink-700 bg-ink-900"
             >
+              <!--
+                O video (3,5MB, ~77% do peso total do site) so ganha `src`
+                quando `revealed` vira true — o MESMO sinal de
+                IntersectionObserver que RevealOnScroll ja usa pra animar
+                este bloco, reaproveitado via slot escopado em vez de um
+                segundo observer. `preload="none"` antes disso garante que
+                nem os metadados baixam cedo demais. Quem nunca rola ate o
+                Contato nunca baixa o video.
+              -->
               <video
                 v-if="item.kind === 'video'"
-                :src="item.src"
+                :src="revealed ? item.src : undefined"
+                preload="none"
+                :width="item.width"
+                :height="item.height"
                 autoplay
                 muted
                 loop
@@ -246,6 +259,8 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
                 :src="item.src"
                 :alt="item.alt"
                 loading="lazy"
+                :width="item.width"
+                :height="item.height"
                 class="h-full w-full object-cover"
               />
             </div>

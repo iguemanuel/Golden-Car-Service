@@ -8,6 +8,7 @@ import { transmissionItems } from '@/data/transmission'
 import { site } from '@/data/site'
 import { resolveIcon } from '@/utils/icons'
 import { useWhatsApp } from '@/composables/useWhatsApp'
+import { STAGGER_STEP } from '@/utils/motion'
 
 import cambioCutaway from '@/assets/imgs/cambio-cutaway.webp'
 
@@ -35,7 +36,7 @@ const whatsappUrl = buildUrl(
           <RevealOnScroll
             v-for="(item, i) in transmissionItems"
             :key="item.title"
-            :delay="i * 80"
+            :delay="i * STAGGER_STEP"
           >
             <li class="flex items-start gap-4">
               <div
@@ -56,7 +57,7 @@ const whatsappUrl = buildUrl(
           </RevealOnScroll>
         </ul>
 
-        <RevealOnScroll :delay="transmissionItems.length * 80">
+        <RevealOnScroll :delay="transmissionItems.length * STAGGER_STEP">
           <BaseButton :href="whatsappUrl" external size="lg" class="group mt-10">
             Falar sobre meu câmbio
             <ArrowRight
@@ -74,7 +75,7 @@ const whatsappUrl = buildUrl(
         branco como uma "placa tecnica" intencional, em vez de brigar com o
         resto da pagina como full-bleed.
       -->
-      <RevealOnScroll :delay="120">
+      <RevealOnScroll :delay="STAGGER_STEP">
         <div class="relative">
           <!--
             O inset acompanha o padding da <section> (px-4 sm:px-6) de

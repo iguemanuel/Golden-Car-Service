@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 import {
   DialogClose,
   DialogContent,
@@ -17,6 +17,7 @@ import BaseButton from '@/components/ui/BaseButton.vue'
 import { navLinks } from '@/data/navigation'
 import { site } from '@/data/site'
 import { useWhatsApp } from '@/composables/useWhatsApp'
+import { useScrolled } from '@/composables/useScrolled'
 
 const { buildUrl } = useWhatsApp()
 const whatsappUrl = buildUrl(
@@ -27,19 +28,8 @@ const whatsappUrl = buildUrl(
  * A navbar nasce transparente sobre o hero e ganha fundo solido depois que a
  * pagina rola, para nao competir com a primeira dobra.
  */
-const scrolled = ref(false)
+const { scrolled } = useScrolled(24)
 const mobileOpen = ref(false)
-
-function onScroll() {
-  scrolled.value = window.scrollY > 24
-}
-
-onMounted(() => {
-  onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
-})
-
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
@@ -95,9 +85,11 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
           </DialogTrigger>
 
           <DialogPortal>
-            <DialogOverlay class="fixed inset-0 z-50 bg-ink-950/80 backdrop-blur-sm" />
+            <DialogOverlay
+              class="fixed inset-0 z-50 bg-ink-950/80 backdrop-blur-sm data-[state=closed]:animate-[dialog-overlay-out_150ms_ease-in] data-[state=open]:animate-[dialog-overlay-in_200ms_ease-out]"
+            />
             <DialogContent
-              class="fixed inset-y-0 right-0 z-50 flex w-full max-w-xs flex-col gap-8 border-l border-ink-700 bg-ink-900 p-6 shadow-2xl focus:outline-none"
+              class="fixed inset-y-0 right-0 z-50 flex w-full max-w-xs flex-col gap-8 border-l border-ink-700 bg-ink-900 p-6 shadow-2xl focus:outline-none data-[state=closed]:animate-[dialog-content-out_200ms_ease-in] data-[state=open]:animate-[dialog-content-in_250ms_cubic-bezier(0.16,1,0.3,1)]"
             >
               <VisuallyHidden>
                 <DialogTitle>Menu de navegação</DialogTitle>

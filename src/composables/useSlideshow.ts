@@ -1,5 +1,7 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
+import { prefersReducedMotion } from '@/utils/motion'
+
 /**
  * Avanca um indice em intervalo fixo, para fundos que alternam entre fotos.
  *
@@ -19,11 +21,8 @@ export function useSlideshow(total: number, intervalMs = 6000) {
   let timer: ReturnType<typeof setInterval> | null = null
   let deferTimer: ReturnType<typeof setTimeout> | null = null
 
-  const reduced = () =>
-    typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
-
   function start() {
-    if (timer || total < 2 || reduced()) return
+    if (timer || total < 2 || prefersReducedMotion()) return
     timer = setInterval(() => {
       current.value = (current.value + 1) % total
     }, intervalMs)

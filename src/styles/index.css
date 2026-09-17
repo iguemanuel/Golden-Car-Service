@@ -44,6 +44,52 @@
   }
 }
 
+/*
+  Menu mobile (Reka UI Dialog, TheNavbar.vue): o overlay e o drawer nao
+  tinham NENHUMA transicao — abriam/fechavam instantaneo. Reka expoe
+  data-state="open"/"closed" nos dois exatamente para isso; as keyframes
+  ficam aqui (nao num <style scoped> do componente) porque Vue prefixa
+  nomes de keyframe em CSS scoped, e a classe Tailwind que as referencia
+  (animate-[nome_duracao_easing]) precisa achar o nome exato, sem prefixo.
+  Reka so desmonta o elemento depois que a animacao de saida termina
+  (Presence/animationend), entao o "fechar" tambem anima, nao so o "abrir".
+*/
+@keyframes dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-content-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes dialog-content-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -158,6 +204,40 @@
       color-mix(in srgb, var(--color-ink-950) 38%, transparent) 100%
     );
     mix-blend-mode: multiply;
+  }
+
+  /*
+    Troca de pagina das avaliacoes: a grade inteira desliza na direcao do
+    clique. `mode="out-in"` no Vue evita duas grades ao mesmo tempo; o
+    prefers-reduced-motion global ja zera a duration.
+  */
+  .reviews-next-enter-active,
+  .reviews-next-leave-active,
+  .reviews-prev-enter-active,
+  .reviews-prev-leave-active {
+    transition:
+      opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reviews-next-enter-from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+
+  .reviews-next-leave-to {
+    opacity: 0;
+    transform: translateX(-1.5rem);
+  }
+
+  .reviews-prev-enter-from {
+    opacity: 0;
+    transform: translateX(-1.5rem);
+  }
+
+  .reviews-prev-leave-to {
+    opacity: 0;
+    transform: translateX(1.5rem);
   }
 }
 

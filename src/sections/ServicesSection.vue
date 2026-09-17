@@ -3,6 +3,7 @@ import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import ServiceCard from '@/components/ui/ServiceCard.vue'
 import { services } from '@/data/services'
+import { STAGGER_STEP } from '@/utils/motion'
 </script>
 
 <template>
@@ -17,7 +18,11 @@ import { services } from '@/data/services'
       </RevealOnScroll>
 
       <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <RevealOnScroll v-for="(service, i) in services" :key="service.title" :delay="i * 60">
+        <RevealOnScroll
+          v-for="(service, i) in services"
+          :key="service.title"
+          :delay="i * STAGGER_STEP"
+        >
           <ServiceCard
             :icon="service.icon"
             :title="service.title"

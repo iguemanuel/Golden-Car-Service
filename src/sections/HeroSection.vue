@@ -7,6 +7,7 @@ import { site } from '@/data/site'
 import { useWhatsApp } from '@/composables/useWhatsApp'
 import { useSlideshow } from '@/composables/useSlideshow'
 import { heroSlides } from '@/data/heroSlides'
+import { STAGGER_STEP } from '@/utils/motion'
 
 const { current, allowed, goTo } = useSlideshow(heroSlides.length)
 
@@ -129,21 +130,21 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
           </p>
         </RevealOnScroll>
 
-        <RevealOnScroll :delay="80">
+        <RevealOnScroll :delay="STAGGER_STEP">
           <h1 class="text-4xl leading-[1.02] sm:text-5xl lg:text-[4rem]">
             Seu câmbio automático
             <span class="block text-gradient-gold">em boas mãos</span>
           </h1>
         </RevealOnScroll>
 
-        <RevealOnScroll :delay="160">
+        <RevealOnScroll :delay="STAGGER_STEP * 2">
           <p class="max-w-lg text-base text-neutral-300 sm:text-lg">
             Troca de óleo com equipamento de fluxo, diagnóstico eletrônico e reparo completo de
             câmbio — além de mecânica em geral, suspensão, motor, freios e performance.
           </p>
         </RevealOnScroll>
 
-        <RevealOnScroll :delay="240">
+        <RevealOnScroll :delay="STAGGER_STEP * 3">
           <BaseButton :href="whatsappUrl" external size="lg" class="group">
             Fazer orçamento
             <ArrowRight
@@ -155,7 +156,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
         </RevealOnScroll>
 
         <!-- Lista de palavras-chave, no lugar da frase corrida -->
-        <RevealOnScroll :delay="320">
+        <RevealOnScroll :delay="STAGGER_STEP * 4">
           <ul
             class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-ink-700/60 pt-5 lg:justify-start"
           >

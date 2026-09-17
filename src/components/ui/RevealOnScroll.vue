@@ -8,6 +8,12 @@ import { useReveal } from '@/composables/useReveal'
  *
  * `delay` escalona itens de uma mesma grade. A animacao em si e neutralizada
  * pelo prefers-reduced-motion definido em styles/index.css.
+ *
+ * Expoe `revealed` via slot escopado para quem precisa do MESMO sinal de
+ * "entrou perto da viewport" para outra coisa alem de animar — ex.:
+ * ContactSection.vue usa para so atribuir o `src` do video do Instagram
+ * quando a secao aparece, em vez de criar um segundo IntersectionObserver
+ * so para isso.
  */
 withDefaults(defineProps<{ delay?: number }>(), { delay: 0 })
 
@@ -22,6 +28,6 @@ const { revealed } = useReveal(el)
     :class="revealed ? 'animate-reveal' : 'opacity-0'"
     :style="{ animationDelay: `${delay}ms` }"
   >
-    <slot />
+    <slot :revealed="revealed" />
   </div>
 </template>

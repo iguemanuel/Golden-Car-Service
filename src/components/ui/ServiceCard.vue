@@ -19,7 +19,7 @@ const IconComponent = computed(() => resolveIcon(props.icon))
 
 <template>
   <article
-    class="group flex h-full flex-col gap-4 rounded-xl border border-hairline-gold bg-ink-800 p-6 transition-colors hover:border-gold-500"
+    class="group flex h-full flex-col gap-4 rounded-xl border border-hairline-gold bg-ink-800 p-6 transition-[color,background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-gold-500 hover:shadow-lg hover:shadow-black/30"
   >
     <div
       class="flex h-11 w-11 items-center justify-center rounded-lg bg-gold-500/10 ring-1 ring-gold-500/30 transition-colors group-hover:bg-gold-500/15"

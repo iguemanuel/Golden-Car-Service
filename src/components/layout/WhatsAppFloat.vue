@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-
 import { site } from '@/data/site'
 import { useWhatsApp } from '@/composables/useWhatsApp'
 import { trackContactClick } from '@/utils/tracking'
+import { useScrolled } from '@/composables/useScrolled'
 
 const { buildUrl } = useWhatsApp()
 const href = buildUrl(`Olá! Vim pelo site da ${site.name} e gostaria de fazer um orçamento.`)
@@ -12,18 +11,7 @@ const href = buildUrl(`Olá! Vim pelo site da ${site.name} e gostaria de fazer u
  * O botao so aparece depois que a pagina rola um pouco: no topo ele
  * competiria com os CTAs do proprio hero.
  */
-const visible = ref(false)
-
-function onScroll() {
-  visible.value = window.scrollY > 400
-}
-
-onMounted(() => {
-  onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
-})
-
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+const { scrolled: visible } = useScrolled(400)
 </script>
 
 <template>

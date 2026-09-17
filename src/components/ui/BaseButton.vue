@@ -15,8 +15,9 @@ const props = withDefaults(
     size?: 'md' | 'lg'
     href?: string
     external?: boolean
+    type?: 'button' | 'submit'
   }>(),
-  { variant: 'primary', size: 'md', external: false },
+  { variant: 'primary', size: 'md', external: false, type: 'button' },
 )
 
 const base =
@@ -46,7 +47,7 @@ const linkAttrs = computed(() =>
   <a v-if="href" :href="href" :class="classes" v-bind="linkAttrs">
     <slot />
   </a>
-  <button v-else type="button" :class="classes">
+  <button v-else :type="type" :class="classes">
     <slot />
   </button>
 </template>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Clock, ExternalLink, Instagram, Mail, MapPin, Phone, Send } from 'lucide-vue-next'
+import { ChevronDown, ExternalLink, Instagram, Send } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import { fullAddress, site } from '@/data/site'
+import { site } from '@/data/site'
+import { contactServiceOptions } from '@/data/services'
+import { brands } from '@/data/brands'
 import { instagramMedia } from '@/data/instagramMedia'
 import { useWhatsApp } from '@/composables/useWhatsApp'
 import { STAGGER_STEP } from '@/utils/motion'
@@ -15,8 +17,23 @@ const { open } = useWhatsApp()
 const featuredVideo = computed(() => instagramMedia.find((item) => item.kind === 'video'))
 const galleryPhotos = computed(() => instagramMedia.filter((item) => item.kind === 'photo'))
 
+const fieldClass =
+  'w-full rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-white placeholder:text-neutral-600 focus:border-gold-500 focus:outline-none'
+
+const brandOptions = [...brands.map((item) => item.name), 'Outra']
+
+/** Do ano atual ate 25 anos atras — cobre o parque de carros com cambio automatico. */
+const currentYear = new Date().getFullYear()
+const yearOptions = [
+  ...Array.from({ length: 25 }, (_, i) => String(currentYear - i)),
+  `Anterior a ${currentYear - 24}`,
+]
+
 const name = ref('')
-const vehicle = ref('')
+const service = ref('')
+const brand = ref('')
+const model = ref('')
+const year = ref('')
 const message = ref('')
 
 /**
@@ -25,13 +42,15 @@ const message = ref('')
  * campos) cobre o essencial; o resto e so montar texto.
  */
 function submit() {
+  const vehicle = [brand.value, model.value.trim(), `(${year.value})`].filter(Boolean).join(' ')
   const parts = [
     `Olá! Me chamo ${name.value} e vim pelo site da ${site.name}.`,
-    `Veículo: ${vehicle.value}.`,
+    `Serviço: ${service.value}.`,
+    `Veículo: ${vehicle}.`,
   ]
   if (message.value.trim()) parts.push(message.value.trim())
 
-  open(parts.join(' '), 'contact-form')
+  open(parts.join('\n'), 'contact-form')
 }
 
 /**
@@ -48,162 +67,19 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
 </script>
 
 <template>
-  <section id="contato" class="scroll-mt-20 bg-ink-950 px-4 py-24 sm:px-6 lg:px-8">
+  <section class="bg-ink-950 px-4 py-24 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
-      <RevealOnScroll>
-        <SectionHeading
-          eyebrow="Fale com a gente"
-          title="Contato"
-          subtitle="Conte o problema do seu veículo — respondemos direto pelo WhatsApp."
-        />
-      </RevealOnScroll>
-
-      <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <!-- Formulario -->
-        <RevealOnScroll>
-          <form class="flex flex-col gap-5" @submit.prevent="submit">
-            <div class="flex flex-col gap-1.5">
-              <label for="contact-name" class="text-sm font-medium text-neutral-300">Nome</label>
-              <input
-                id="contact-name"
-                v-model="name"
-                type="text"
-                required
-                placeholder="Seu nome"
-                class="rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-white placeholder:text-neutral-600 focus:border-gold-500 focus:outline-none"
-              />
-            </div>
-
-            <div class="flex flex-col gap-1.5">
-              <label for="contact-vehicle" class="text-sm font-medium text-neutral-300">
-                Veículo e ano
-              </label>
-              <input
-                id="contact-vehicle"
-                v-model="vehicle"
-                type="text"
-                required
-                placeholder="Ex.: Corolla 2019, câmbio automático"
-                class="rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-white placeholder:text-neutral-600 focus:border-gold-500 focus:outline-none"
-              />
-            </div>
-
-            <div class="flex flex-col gap-1.5">
-              <label for="contact-message" class="text-sm font-medium text-neutral-300">
-                Conte o que está acontecendo
-              </label>
-              <textarea
-                id="contact-message"
-                v-model="message"
-                rows="4"
-                placeholder="Ex.: câmbio está trocando de marcha com solavanco"
-                class="resize-none rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-white placeholder:text-neutral-600 focus:border-gold-500 focus:outline-none"
-              ></textarea>
-            </div>
-
-            <BaseButton size="lg" class="group justify-center">
-              Enviar no WhatsApp
-              <Send
-                :size="18"
-                class="transition-transform group-hover:translate-x-1"
-                aria-hidden="true"
-              />
-            </BaseButton>
-          </form>
-        </RevealOnScroll>
-
-        <!-- Dados de contato + mapa -->
-        <RevealOnScroll :delay="STAGGER_STEP">
-          <div class="flex flex-col gap-8">
-            <ul class="flex flex-col gap-4 text-neutral-300">
-              <li>
-                <a
-                  :href="`tel:+55${site.contact.phone}`"
-                  class="flex items-center gap-3 transition-colors hover:text-gold-500"
-                >
-                  <Phone :size="18" class="shrink-0 text-gold-500" aria-hidden="true" />
-                  {{ site.contact.phoneDisplay }}
-                </a>
-              </li>
-              <li>
-                <a
-                  :href="`mailto:${site.contact.email}`"
-                  class="flex items-center gap-3 transition-colors hover:text-gold-500"
-                >
-                  <Mail :size="18" class="shrink-0 text-gold-500" aria-hidden="true" />
-                  {{ site.contact.email }}
-                </a>
-              </li>
-              <li>
-                <a
-                  :href="site.contact.instagramUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center gap-3 transition-colors hover:text-gold-500"
-                >
-                  <Instagram :size="18" class="shrink-0 text-gold-500" aria-hidden="true" />
-                  &#64;{{ site.contact.instagram }}
-                </a>
-              </li>
-              <li class="flex items-start gap-3">
-                <MapPin :size="18" class="mt-0.5 shrink-0 text-gold-500" aria-hidden="true" />
-                <span>{{ fullAddress }}</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <Clock :size="18" class="mt-0.5 shrink-0 text-gold-500" aria-hidden="true" />
-                <span>
-                  {{ site.hours.weekdays }}<br />
-                  {{ site.hours.saturday }}
-                </span>
-              </li>
-            </ul>
-          </div>
-        </RevealOnScroll>
-      </div>
-
-      <!--
-        Mapa como bloco proprio, full-width — nao dividindo espaco com a
-        lista de contato. Mesmo tratamento de cabecalho do bloco do
-        Instagram logo abaixo, para os dois blocos "extra" da secao lerem
-        como parte do mesmo padrao visual.
-      -->
-      <RevealOnScroll :delay="STAGGER_STEP * 2">
-        <div class="mt-16">
-          <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p class="font-display text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
-                Localização
-              </p>
-              <h3 class="mt-2 text-2xl">Onde estamos</h3>
-            </div>
-            <BaseButton :href="site.googleMapsUrl" external variant="outline">
-              <ExternalLink :size="16" aria-hidden="true" />
-              Abrir no Google Maps
-            </BaseButton>
-          </div>
-
-          <!-- Sem API key, embed a partir das coordenadas da ficha real -->
-          <div class="h-[420px] w-full overflow-hidden rounded-xl border border-ink-700">
-            <iframe
-              :src="mapEmbedSrc"
-              title="Localização da Golden Car Service no Google Maps"
-              class="h-full w-full grayscale-[40%] invert-[92%] contrast-[90%]"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </div>
-      </RevealOnScroll>
-
       <!--
         Video + fotos do Instagram — mesmo padrao do Guará Motors Racing
         (Web-Motors, github.com/iguemanuel): video autohospedado, nao embed
         do Instagram. Some sozinha enquanto instagramMedia estiver vazio
-        (ver o comentario em src/data/instagramMedia.ts).
+        (ver o comentario em src/data/instagramMedia.ts). Vem primeiro, como
+        prova social, antes do convite "Fale com a gente" — que fica colado
+        ao formulario que ele introduz, nao ao topo da secao.
       -->
-      <RevealOnScroll v-if="instagramMedia.length > 0" v-slot="{ revealed }" :delay="STAGGER_STEP * 3">
-        <div class="mt-16 border-t border-ink-700/60 pt-12">
-          <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <RevealOnScroll v-if="instagramMedia.length > 0" v-slot="{ revealed }">
+        <div>
+          <div class="mb-6 flex flex-col items-center gap-4 text-center">
             <div>
               <p class="font-display text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
                 Oficina
@@ -266,6 +142,187 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
                 />
               </div>
             </div>
+          </div>
+        </div>
+      </RevealOnScroll>
+
+      <div id="contato" class="scroll-mt-20">
+      <!--
+        Heading "Contato" colado ao formulario que ele introduz — nao ao
+        topo da secao, onde ficaria acima da Oficina sem relacao com ela.
+      -->
+      <RevealOnScroll :delay="STAGGER_STEP">
+        <SectionHeading
+          class="mt-16"
+          eyebrow="Fale com a gente"
+          title="Contato"
+          subtitle="Conte o problema do seu veículo — respondemos direto pelo WhatsApp."
+        />
+      </RevealOnScroll>
+
+      <!-- Mesma largura do mapa (max-w-7xl do container), sem coluna mais estreita. -->
+      <div class="mt-14">
+        <RevealOnScroll :delay="STAGGER_STEP * 2">
+          <form
+            class="flex flex-col gap-8 rounded-2xl border border-ink-700 bg-ink-900 p-6 sm:p-10 lg:p-12"
+            @submit.prevent="submit"
+          >
+            <fieldset class="flex flex-col gap-5">
+              <legend class="sr-only">Seus dados</legend>
+
+              <div class="flex flex-col gap-1.5">
+                <label for="contact-name" class="text-sm font-medium text-neutral-300">
+                  Nome
+                </label>
+                <input
+                  id="contact-name"
+                  v-model="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  placeholder="Seu nome"
+                  :class="fieldClass"
+                />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label for="contact-service" class="text-sm font-medium text-neutral-300">
+                  Tipo de serviço
+                </label>
+                <div class="relative">
+                  <select
+                    id="contact-service"
+                    v-model="service"
+                    required
+                    :class="[fieldClass, 'appearance-none pr-11']"
+                  >
+                    <option value="" disabled>Selecione o serviço</option>
+                    <option v-for="option in contactServiceOptions" :key="option" :value="option">
+                      {{ option }}
+                    </option>
+                  </select>
+                  <ChevronDown
+                    :size="18"
+                    class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500"
+                    aria-hidden="true"
+                  />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="flex flex-col gap-5">
+              <legend class="mb-1 text-sm font-medium text-neutral-300">Veículo</legend>
+
+              <div class="grid gap-4 sm:grid-cols-3">
+                <div class="flex flex-col gap-1.5">
+                  <label for="contact-brand" class="text-sm text-neutral-400">Marca</label>
+                  <div class="relative">
+                    <select
+                      id="contact-brand"
+                      v-model="brand"
+                      required
+                      :class="[fieldClass, 'appearance-none pr-11']"
+                    >
+                      <option value="" disabled>Selecione</option>
+                      <option v-for="option in brandOptions" :key="option" :value="option">
+                        {{ option }}
+                      </option>
+                    </select>
+                    <ChevronDown
+                      :size="18"
+                      class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                  <label for="contact-model" class="text-sm text-neutral-400">Modelo</label>
+                  <input
+                    id="contact-model"
+                    v-model="model"
+                    type="text"
+                    required
+                    placeholder="Ex.: Civic"
+                    :class="fieldClass"
+                  />
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                  <label for="contact-year" class="text-sm text-neutral-400">Ano</label>
+                  <div class="relative">
+                    <select
+                      id="contact-year"
+                      v-model="year"
+                      required
+                      :class="[fieldClass, 'appearance-none pr-11']"
+                    >
+                      <option value="" disabled>Selecione</option>
+                      <option v-for="option in yearOptions" :key="option" :value="option">
+                        {{ option }}
+                      </option>
+                    </select>
+                    <ChevronDown
+                      :size="18"
+                      class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="contact-message" class="text-sm font-medium text-neutral-300">
+                Conte o que está acontecendo
+              </label>
+              <textarea
+                id="contact-message"
+                v-model="message"
+                rows="5"
+                placeholder="Ex.: câmbio está trocando de marcha com solavanco"
+                :class="[fieldClass, 'resize-none']"
+              ></textarea>
+            </div>
+
+            <BaseButton type="submit" size="lg" class="group justify-center">
+              Enviar no WhatsApp
+              <Send
+                :size="18"
+                class="transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </BaseButton>
+          </form>
+        </RevealOnScroll>
+      </div>
+      </div>
+
+      <!-- Mapa abaixo do formulario, mesma largura do card de contato. -->
+      <RevealOnScroll :delay="STAGGER_STEP * 3">
+        <div class="mt-16">
+          <div class="mb-6 flex flex-col items-center gap-4 text-center">
+            <div>
+              <p class="font-display text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
+                Localização
+              </p>
+              <h3 class="mt-2 text-2xl">Onde estamos</h3>
+            </div>
+            <BaseButton :href="site.googleMapsUrl" external variant="outline">
+              <ExternalLink :size="16" aria-hidden="true" />
+              Abrir no Google Maps
+            </BaseButton>
+          </div>
+
+          <!-- Sem API key, embed a partir das coordenadas da ficha real -->
+          <div class="h-[420px] w-full overflow-hidden rounded-xl border border-ink-700">
+            <iframe
+              :src="mapEmbedSrc"
+              title="Localização da Golden Car Service no Google Maps"
+              class="h-full w-full grayscale-[40%] invert-[92%] contrast-[90%]"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </RevealOnScroll>

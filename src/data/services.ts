@@ -47,3 +47,10 @@ export const services: Service[] = [
       'Manutenção vital do motor com óleos de alta qualidade, recomendados para cada veículo.',
   },
 ]
+
+/** Opcoes do seletor no formulario de contato — especialidade primeiro. */
+export const contactServiceOptions = [
+  'Câmbio automático',
+  ...services.map((service) => service.title),
+  'Outro',
+] as const

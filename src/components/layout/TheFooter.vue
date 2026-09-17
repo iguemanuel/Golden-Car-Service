@@ -4,6 +4,12 @@ import { Facebook, Instagram, Mail, MapPin, Phone, Clock } from 'lucide-vue-next
 import TheLogo from '@/components/ui/TheLogo.vue'
 import { navLinks } from '@/data/navigation'
 import { fullAddress, site } from '@/data/site'
+import { useWhatsApp } from '@/composables/useWhatsApp'
+
+const { buildUrl } = useWhatsApp()
+const whatsappUrl = buildUrl(
+  `Olá! Vim pelo site da ${site.name} e gostaria de fazer um orçamento.`,
+)
 
 const year = new Date().getFullYear()
 </script>
@@ -28,7 +34,9 @@ const year = new Date().getFullYear()
           <ul class="flex flex-col gap-2.5">
             <li v-for="link in navLinks" :key="link.href">
               <a
-                :href="link.href"
+                :href="link.external ? whatsappUrl : link.href"
+                :target="link.external ? '_blank' : undefined"
+                :rel="link.external ? 'noopener noreferrer' : undefined"
                 class="text-sm text-neutral-400 transition-colors hover:text-gold-500"
               >
                 {{ link.label }}

@@ -53,7 +53,9 @@ const mobileOpen = ref(false)
       <ul class="hidden items-center gap-7 lg:flex">
         <li v-for="link in navLinks" :key="link.href">
           <a
-            :href="link.href"
+            :href="link.external ? whatsappUrl : link.href"
+            :target="link.external ? '_blank' : undefined"
+            :rel="link.external ? 'noopener noreferrer' : undefined"
             class="text-sm font-medium text-neutral-300 transition-colors hover:text-gold-500"
           >
             {{ link.label }}
@@ -109,7 +111,9 @@ const mobileOpen = ref(false)
                 <li v-for="link in navLinks" :key="link.href">
                   <!-- Fecha o drawer antes de rolar, senao o overlay cobre o destino -->
                   <a
-                    :href="link.href"
+                    :href="link.external ? whatsappUrl : link.href"
+                    :target="link.external ? '_blank' : undefined"
+                    :rel="link.external ? 'noopener noreferrer' : undefined"
                     class="block rounded-lg px-3 py-3 font-display font-semibold text-neutral-200 transition-colors hover:bg-ink-800 hover:text-gold-500"
                     @click="mobileOpen = false"
                   >

@@ -68,12 +68,6 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
     <!-- Escurecimento do texto no mobile, onde a foto fica atras dele -->
     <div class="absolute inset-0 -z-10 bg-ink-950/75 lg:hidden" aria-hidden="true"></div>
 
-    <!-- Brilho dourado radial, para o painel solido nao ficar chapado -->
-    <div
-      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_55%_45%_at_18%_12%,rgba(212,175,55,0.10),transparent_70%)]"
-      aria-hidden="true"
-    ></div>
-
     <!--
       Escurecimento no topo, atras da navbar. Com o painel esquerdo opaco a
       foto passou a aparecer em brilho cheio, e os links da navbar que caem

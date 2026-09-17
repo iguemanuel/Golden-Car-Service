@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Instagram, Mail, MapPin, Phone, Clock } from 'lucide-vue-next'
+import { Facebook, Instagram, Mail, MapPin, Phone, Clock } from 'lucide-vue-next'
 
 import TheLogo from '@/components/ui/TheLogo.vue'
 import { navLinks } from '@/data/navigation'
@@ -72,6 +72,17 @@ const year = new Date().getFullYear()
                 &#64;{{ site.contact.instagram }}
               </a>
             </li>
+            <li>
+              <a
+                :href="site.contact.facebookUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2.5 transition-colors hover:text-gold-500"
+              >
+                <Facebook :size="16" class="shrink-0 text-gold-500" aria-hidden="true" />
+                Facebook
+              </a>
+            </li>
             <li class="flex items-start gap-2.5">
               <MapPin :size="16" class="mt-0.5 shrink-0 text-gold-500" aria-hidden="true" />
               <span>{{ fullAddress }}</span>
@@ -91,7 +102,7 @@ const year = new Date().getFullYear()
         class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-ink-700 pt-6 text-xs text-neutral-500 sm:flex-row"
       >
         <p>&copy; {{ year }} {{ site.name }}. Todos os direitos reservados.</p>
-        <p>CNPJ a informar</p>
+        <p>CNPJ {{ site.cnpj }}</p>
       </div>
     </div>
   </footer>

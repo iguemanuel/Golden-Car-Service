@@ -13,6 +13,8 @@ export const site = {
   name: 'Golden Car Service',
   shortName: 'Golden Car',
   tagline: 'Especialista em câmbio automático',
+  /** GOLDEN CAR SERVICE CAPM LTDA — informado pelo cliente. */
+  cnpj: '64.063.532/0001-50',
   description:
     'Especialista em troca de óleo de câmbio automático, reparos no câmbio, ' +
     'mecânica em geral, suspensão, motor, freios e performance.',
@@ -27,6 +29,8 @@ export const site = {
     email: 'goldencarservice@outlook.com',
     instagram: 'golden_carservice',
     instagramUrl: 'https://instagram.com/golden_carservice',
+    /** Pagina da oficina — sem locale na URL para nao forcar portugues de Portugal. */
+    facebookUrl: 'https://www.facebook.com/profile.php?id=61566248353911',
   },
 
   /**

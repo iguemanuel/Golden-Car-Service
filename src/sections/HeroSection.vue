@@ -116,7 +116,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
     -->
     <div class="px-4 sm:px-6 lg:px-[6vw]">
       <div
-        class="flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center gap-7 py-20 text-center lg:max-w-lg lg:items-start lg:text-left"
+        class="flex min-h-[calc(100svh-9.5rem)] flex-col items-center justify-center gap-7 py-16 text-center lg:max-w-lg lg:items-start lg:text-left"
       >
         <!-- Pill de categoria, como na referencia -->
         <RevealOnScroll>
@@ -178,7 +178,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
       do texto e os pontos so competiriam com a leitura.
     -->
     <div
-      class="absolute right-8 bottom-36 z-10 hidden items-center gap-2.5 lg:flex"
+      class="absolute right-8 bottom-8 z-10 hidden items-center gap-2.5 lg:flex"
       role="group"
       aria-label="Trocar foto de fundo"
     >

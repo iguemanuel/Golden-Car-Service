@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
-import { highlights } from '@/data/highlights'
 import { site } from '@/data/site'
 import { useWhatsApp } from '@/composables/useWhatsApp'
 import { useSlideshow } from '@/composables/useSlideshow'
@@ -194,27 +193,12 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
       ></button>
     </div>
 
-    <!-- Faixa de numeros, encostada na base do hero -->
-    <RevealOnScroll :delay="400">
-      <div class="relative border-t border-ink-700/70 bg-ink-950/80 backdrop-blur-sm">
-        <dl class="mx-auto grid max-w-5xl grid-cols-2 sm:grid-cols-4">
-          <div
-            v-for="item in highlights"
-            :key="item.label"
-            class="flex flex-col items-center gap-1 px-4 py-7"
-          >
-            <dt class="sr-only">{{ item.label }}</dt>
-            <dd class="flex flex-col items-center gap-1">
-              <span class="text-gradient-gold font-display text-3xl font-extrabold sm:text-4xl">
-                {{ item.value }}
-              </span>
-              <span class="text-xs tracking-wide text-neutral-500 uppercase">
-                {{ item.label }}
-              </span>
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </RevealOnScroll>
+    <!--
+      Faixa de numeros REMOVIDA por hora — os valores (anos de estrada, nota,
+      veiculos atendidos, garantia) eram placeholders inventados, nunca
+      confirmados pela Erica (ver aviso em src/data/highlights.ts). Publicar
+      numero inventado sobre negocio real nao pode ir ao ar. O componente
+      volta assim que os quatro valores forem confirmados ou definidos.
+    -->
   </section>
 </template>

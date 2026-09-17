@@ -12,6 +12,7 @@ import mercedes from '@/assets/imgs/brands/mercedes.svg'
 import audi from '@/assets/imgs/brands/audi.svg'
 import jeep from '@/assets/imgs/brands/jeep.svg'
 import mitsubishi from '@/assets/imgs/brands/mitsubishi.svg'
+import peugeot from '@/assets/imgs/brands/peugeot.svg'
 
 /**
  * Marcas atendidas, com o logo de cada uma.
@@ -29,6 +30,14 @@ import mitsubishi from '@/assets/imgs/brands/mitsubishi.svg'
  * nao no CSS. Servem so para o navegador calcular a proporcao e reservar
  * o espaco antes do arquivo carregar (evita CLS); quem controla o tamanho
  * exibido continua sendo `width` (CSS) + a altura fixa do carrossel.
+ *
+ * `chip`: a Peugeot e a unica logo que e um crachá de duas cores (disco
+ * preto + leao branco por cima, sem recorte alfa entre as duas) em vez de
+ * uma silhueta so — o filtro `brightness-0 invert` usado nas outras
+ * (pensado pra silhueta) funde as duas cores numa mancha branca solida e
+ * perde o leao. Em vez disso, essa logo mantem as cores originais dentro
+ * de um chip claro arredondado, exatamente a mitigacao ja prevista no
+ * plano do projeto para logo de baixo contraste sobre fundo escuro.
  */
 export interface Brand {
   name: string
@@ -36,6 +45,7 @@ export interface Brand {
   width: string
   naturalWidth: number
   naturalHeight: number
+  chip?: boolean
 }
 
 export const brands: Brand[] = [
@@ -53,4 +63,12 @@ export const brands: Brand[] = [
   { name: 'Audi', logo: audi, width: '7rem', naturalWidth: 91, naturalHeight: 32 },
   { name: 'Jeep', logo: jeep, width: '6rem', naturalWidth: 32, naturalHeight: 13 },
   { name: 'Mitsubishi', logo: mitsubishi, width: '2.75rem', naturalWidth: 32, naturalHeight: 28 },
+  {
+    name: 'Peugeot',
+    logo: peugeot,
+    width: '2.25rem',
+    naturalWidth: 500,
+    naturalHeight: 549,
+    chip: true,
+  },
 ]

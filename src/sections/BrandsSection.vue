@@ -7,11 +7,11 @@ import { brands } from '@/data/brands'
   <section class="border-y border-ink-700/60 bg-ink-900 py-14" aria-label="Marcas atendidas">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <RevealOnScroll>
-        <p
+        <h2
           class="mb-8 text-center font-display text-xs font-bold tracking-[0.2em] text-neutral-500 uppercase"
         >
           Atendemos todas as marcas
-        </p>
+        </h2>
       </RevealOnScroll>
     </div>
 
@@ -25,7 +25,10 @@ import { brands } from '@/data/brands'
 
       brightness-0 invert transforma qualquer SVG (preto, vermelho, azul)
       numa silhueta branca — mesma tecnica de logo cloud em fundo escuro,
-      sem filtro SVG por marca.
+      sem filtro SVG por marca. Excecao: `brand.chip` (Peugeot, ver
+      src/data/brands.ts) — um crachá de duas cores opacas onde esse filtro
+      fundiria tudo numa mancha solida, entao mantem a cor original dentro
+      de um chip claro.
     -->
     <div
       class="group relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
@@ -39,7 +42,11 @@ import { brands } from '@/data/brands'
           :width="brand.naturalWidth"
           :height="brand.naturalHeight"
           :style="{ width: brand.width }"
-          class="h-10 shrink-0 object-contain opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100"
+          :class="
+            brand.chip
+              ? 'h-10 shrink-0 rounded-full bg-neutral-100 object-contain p-1 opacity-80 transition-opacity duration-300 hover:opacity-100'
+              : 'h-10 shrink-0 object-contain opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100'
+          "
           loading="lazy"
         />
       </div>

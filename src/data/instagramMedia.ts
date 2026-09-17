@@ -1,6 +1,7 @@
 import oficinaReel from '@/assets/insta/oficina-reel.mp4'
 import fachada1 from '@/assets/insta/fachada-1.webp'
 import fachada2 from '@/assets/insta/fachada-2.webp'
+import oficinaInterior from '@/assets/insta/oficina-interior.webp'
 
 /**
  * Video e fotos do Instagram exibidos na secao de contato — mesmo padrao
@@ -38,5 +39,10 @@ export const instagramMedia: InstagramMediaItem[] = [
     src: fachada2,
     kind: 'photo',
     alt: 'Placa de serviços da Golden Car Service e selo de oficina associada Câmbio Automático do Brasil',
+  },
+  {
+    src: oficinaInterior,
+    kind: 'photo',
+    alt: 'Interior da oficina Golden Car Service, com veículos nos elevadores em manutenção',
   },
 ]

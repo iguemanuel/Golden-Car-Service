@@ -213,26 +213,23 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
           </div>
 
           <!--
-            sm:h-[340px] fixo trava a altura total do bloco — antes cada
-            celula usava aspect-ratio pra se dimensionar (aspect-square nas
-            fotos, o video acompanhando via row-span-2/aspect-auto), e numa
-            coluna larga (max-w-7xl) isso inflava o bloco inteiro para
-            ~1600px de altura, dominando a secao. Com altura fixa + h-full
-            nas celulas, o object-cover cuida do recorte e o bloco fica do
-            tamanho de um acento visual, nao do protagonista da secao.
+            Cartoes verticais (tipo Stories) de altura fixa, todos com a
+            mesma proporcao retrato (aspect-[3/4]) — inclusive o video,
+            nao so as fotos. object-cover cuida do recorte de qualquer
+            imagem de origem, entao a orientacao real do arquivo (a nova
+            foto do interior veio em paisagem) nao importa.
+
+            Grid simples ao inves do layout anterior (video ocupando 2
+            linhas via row-span, fotos preenchendo o resto): aquele so
+            funcionava para exatamente 3 itens. Este escala sozinho para
+            qualquer quantidade — 2 colunas no mobile, uma linha unica a
+            partir do sm.
           -->
-          <div
-            class="grid grid-cols-2 gap-3 sm:h-[340px] sm:grid-rows-2 sm:[grid-auto-flow:column]"
-          >
+          <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div
               v-for="item in instagramMedia"
               :key="item.src"
-              class="overflow-hidden rounded-xl border border-ink-700 bg-ink-900"
-              :class="
-                item.kind === 'video'
-                  ? 'col-span-2 aspect-video sm:col-span-1 sm:row-span-2 sm:aspect-auto sm:h-full'
-                  : 'aspect-square sm:aspect-auto sm:h-full'
-              "
+              class="aspect-[3/4] overflow-hidden rounded-xl border border-ink-700 bg-ink-900"
             >
               <video
                 v-if="item.kind === 'video'"

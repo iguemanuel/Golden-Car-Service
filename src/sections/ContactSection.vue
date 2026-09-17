@@ -30,9 +30,17 @@ function submit() {
   open(parts.join(' '), 'contact-form')
 }
 
-/** Embed sem API key, a partir das mesmas coordenadas de site.googleMapsUrl. */
-const mapEmbedSrc =
-  'https://www.google.com/maps?q=Golden+Car+Service,-25.3593592,-51.4648012&z=15&output=embed'
+/**
+ * Embed sem API key, a partir do ENDERECO em texto (site.address.mapsQuery),
+ * nao de coordenadas fixas — o Google geocodifica ao vivo dentro do iframe.
+ * Antes usava uma coordenada hardcoded para "Ponta Grossa", cidade errada
+ * (o endereco real e em Guarapuava — ver o comentario em site.ts). Query
+ * de texto elimina esse tipo de erro: se o endereco mudar, e so trocar
+ * site.address, sem precisar regeocodificar nada a mao.
+ */
+const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
+  `${site.name}, ${site.address.mapsQuery}`,
+)}&z=16&output=embed`
 </script>
 
 <template>

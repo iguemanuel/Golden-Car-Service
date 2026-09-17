@@ -30,19 +30,28 @@ export const site = {
   },
 
   /**
-   * PENDENTE: endereco completo nao foi informado no briefing.
-   * DDD 42 cobre a regiao de Ponta Grossa / Guarapuava (PR) — confirmar com o cliente.
-   * Sem isso nao da para fechar o mapa nem o JSON-LD de negocio local.
+   * Endereco da ficha REAL do Google Maps (a mesma de googleMapsUrl
+   * abaixo, CID 0xf64678b9e55c0b55) — 5.0 estrelas, 38 avaliacoes.
+   * Cidade e Guarapuava, nao Ponta Grossa como estava antes (o DDD 42
+   * cobre as duas; o cliente corrigiu apontando um link do Google Maps).
+   *
+   * Existe TAMBEM um endereco diferente no CNPJ (Rua Oscar Bezerra, 371 —
+   * Vila Carli, econodata.com.br) — provavelmente o escritorio contabil,
+   * nao a oficina. Ficou de fora de proposito: quem procura "onde
+   * estamos" quer o endereco onde o carro entra, nao o de registro.
+   *
+   * pending fica true so como lembrete de pedir a confirmacao final ao
+   * cliente, mesmo essa sendo a ficha publica que ja aparece nas buscas.
    */
   address: {
     pending: PENDENTE,
-    street: 'Rua a confirmar, 000',
-    district: 'Bairro a confirmar',
-    city: 'Ponta Grossa',
+    street: 'Rua Rio Branco, 144',
+    district: 'Conradinho',
+    city: 'Guarapuava',
     state: 'PR',
-    zip: '00000-000',
-    /** Query usada no embed do Google Maps enquanto o endereco real nao chega. */
-    mapsQuery: 'Ponta Grossa, PR',
+    zip: '85055-470',
+    /** Query usada no embed do Google Maps — texto do endereco, geocodificado ao vivo pelo Google. */
+    mapsQuery: 'Rua Rio Branco, 144, Conradinho, Guarapuava - PR, 85055-470',
   },
 
   /** PENDENTE: horario de funcionamento nao informado. */

@@ -18,6 +18,7 @@ const { revealed } = useReveal(el)
 <template>
   <div
     ref="el"
+    class="h-full"
     :class="revealed ? 'animate-reveal' : 'opacity-0'"
     :style="{ animationDelay: `${delay}ms` }"
   >

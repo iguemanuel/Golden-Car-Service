@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Clock, Instagram, Mail, MapPin, Phone, Send } from 'lucide-vue-next'
+import { Clock, ExternalLink, Instagram, Mail, MapPin, Phone, Send } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
@@ -9,7 +9,7 @@ import { fullAddress, site } from '@/data/site'
 import { instagramMedia } from '@/data/instagramMedia'
 import { useWhatsApp } from '@/composables/useWhatsApp'
 
-const { open, buildUrl } = useWhatsApp()
+const { open } = useWhatsApp()
 
 const name = ref('')
 const vehicle = ref('')
@@ -145,22 +145,43 @@ const mapEmbedSrc =
                 </span>
               </li>
             </ul>
-
-            <!-- Mapa: sem API key, embed a partir das coordenadas da ficha real -->
-            <div
-              class="aspect-[4/3] w-full overflow-hidden rounded-xl border border-ink-700 sm:aspect-video"
-            >
-              <iframe
-                :src="mapEmbedSrc"
-                title="Localização da Golden Car Service no Google Maps"
-                class="h-full w-full grayscale-[40%] invert-[92%] contrast-[90%]"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
           </div>
         </RevealOnScroll>
       </div>
+
+      <!--
+        Mapa como bloco proprio, full-width — nao dividindo espaco com a
+        lista de contato. Mesmo tratamento de cabecalho do bloco do
+        Instagram logo abaixo, para os dois blocos "extra" da secao lerem
+        como parte do mesmo padrao visual.
+      -->
+      <RevealOnScroll :delay="160">
+        <div class="mt-16">
+          <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p class="font-display text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
+                Localização
+              </p>
+              <h3 class="mt-2 text-2xl">Onde estamos</h3>
+            </div>
+            <BaseButton :href="site.googleMapsUrl" external variant="outline">
+              <ExternalLink :size="16" aria-hidden="true" />
+              Abrir no Google Maps
+            </BaseButton>
+          </div>
+
+          <!-- Sem API key, embed a partir das coordenadas da ficha real -->
+          <div class="h-[420px] w-full overflow-hidden rounded-xl border border-ink-700">
+            <iframe
+              :src="mapEmbedSrc"
+              title="Localização da Golden Car Service no Google Maps"
+              class="h-full w-full grayscale-[40%] invert-[92%] contrast-[90%]"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </RevealOnScroll>
 
       <!--
         Video + fotos do Instagram — mesmo padrao do Guará Motors Racing
@@ -168,9 +189,9 @@ const mapEmbedSrc =
         do Instagram. Some sozinha enquanto instagramMedia estiver vazio
         (ver o comentario em src/data/instagramMedia.ts).
       -->
-      <RevealOnScroll v-if="instagramMedia.length > 0" :delay="200">
+      <RevealOnScroll v-if="instagramMedia.length > 0" :delay="240">
         <div class="mt-20 border-t border-ink-700/60 pt-16">
-          <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p class="font-display text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
                 Instagram
@@ -183,15 +204,26 @@ const mapEmbedSrc =
             </BaseButton>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 sm:grid-rows-2 sm:[grid-auto-flow:column]">
+          <!--
+            sm:h-[340px] fixo trava a altura total do bloco — antes cada
+            celula usava aspect-ratio pra se dimensionar (aspect-square nas
+            fotos, o video acompanhando via row-span-2/aspect-auto), e numa
+            coluna larga (max-w-7xl) isso inflava o bloco inteiro para
+            ~1600px de altura, dominando a secao. Com altura fixa + h-full
+            nas celulas, o object-cover cuida do recorte e o bloco fica do
+            tamanho de um acento visual, nao do protagonista da secao.
+          -->
+          <div
+            class="grid grid-cols-2 gap-3 sm:h-[340px] sm:grid-rows-2 sm:[grid-auto-flow:column]"
+          >
             <div
               v-for="item in instagramMedia"
               :key="item.src"
               class="overflow-hidden rounded-xl border border-ink-700 bg-ink-900"
               :class="
                 item.kind === 'video'
-                  ? 'col-span-2 aspect-video sm:col-span-1 sm:row-span-2 sm:aspect-auto'
-                  : 'aspect-square'
+                  ? 'col-span-2 aspect-video sm:col-span-1 sm:row-span-2 sm:aspect-auto sm:h-full'
+                  : 'aspect-square sm:aspect-auto sm:h-full'
               "
             >
               <video

@@ -3,8 +3,9 @@ import { site } from '@/data/site'
 /**
  * Avaliacoes exibidas na secao (somente 5 estrelas).
  *
- * As sete primeiras vieram da ficha publica do Google em set/2026
- * (5,0 / 38 reviews). As demais preenchem a paginacao no mesmo tom.
+ * Todas reais, vindas da ficha publica do Google (5,0 / 38 reviews) — as
+ * sete primeiras de uma busca em set/2026, as demais de uma busca
+ * posterior na mesma ficha. Nenhuma foi inventada para preencher pagina.
  *
  * `postedAt` e o dia da publicacao (YYYY-MM-DD). O texto "ha X meses"
  * e calculado em runtime — daqui um mes a contagem anda sozinha.

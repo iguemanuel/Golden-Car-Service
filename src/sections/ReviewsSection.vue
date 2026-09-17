@@ -63,22 +63,29 @@ function goTo(next: number) {
         </div>
       </RevealOnScroll>
 
-      <div class="relative mt-12 min-h-64 overflow-hidden">
-        <Transition :name="transitionName" mode="out-in">
-          <div
-            :key="page"
-            class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            <RevealOnScroll
-              v-for="(review, i) in pageReviews"
-              :key="review.name"
-              :delay="i * STAGGER_STEP"
+      <!--
+        UM SO RevealOnScroll pro bloco inteiro (entrada quando a secao
+        aparece no scroll) — antes cada card tinha o seu proprio, dentro do
+        v-for. Como o grid troca de `:key="page"` a cada clique de
+        paginacao, cada RevealOnScroll individual remontava do zero e
+        tocava a animacao de entrada de novo, ao mesmo tempo que o
+        <Transition> do proprio grid — duas animacoes sobrepostas a cada
+        pagina. Agora so o <Transition> (o slide lateral) anima a troca de
+        pagina; a entrada com fade continua so na primeira vez que a secao
+        aparece.
+      -->
+      <RevealOnScroll :delay="STAGGER_STEP * 2" class="mt-12">
+        <div class="relative min-h-64 overflow-hidden">
+          <Transition :name="transitionName" mode="out-in">
+            <div
+              :key="page"
+              class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
             >
-              <ReviewCard :review="review" />
-            </RevealOnScroll>
-          </div>
-        </Transition>
-      </div>
+              <ReviewCard v-for="review in pageReviews" :key="review.name" :review="review" />
+            </div>
+          </Transition>
+        </div>
+      </RevealOnScroll>
 
       <nav
         v-if="totalPages > 1"
@@ -123,7 +130,7 @@ function goTo(next: number) {
         </button>
       </nav>
 
-      <RevealOnScroll :delay="STAGGER_STEP * 2">
+      <RevealOnScroll :delay="STAGGER_STEP * 3">
         <div class="mt-10 flex justify-center">
           <BaseButton :href="googleRating.url" external variant="outline">
             Ver todas no Google

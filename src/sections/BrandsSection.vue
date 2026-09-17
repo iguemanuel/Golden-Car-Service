@@ -1,6 +1,26 @@
 <script setup lang="ts">
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import { brands } from '@/data/brands'
+
+/**
+ * Logos desenhados em preto/quase-preto sobre fundo transparente — sem
+ * cor propria que se destaque no ink-900 do site. Confirmado inspecionando
+ * o fill/stroke de cada SVG e depois na tela renderizada (ver commits
+ * anteriores). Ford, Hyundai, Fiat e Chevrolet tem cor propria e ficam
+ * como estao; so estes recebem o filtro que os deixa em branco.
+ */
+const needsWhiteTint = new Set([
+  'Toyota',
+  'Honda',
+  'Nissan',
+  'Volkswagen',
+  'Mercedes-Benz',
+  'Audi',
+  'Jeep',
+  'Renault', // sem fill explicito no SVG — cai no preto padrao
+  'BMW', // emblema cromado 100% opaco (mesma familia do Fiat) — vira
+  // circulo solido branco em vez de preto invisivel
+])
 </script>
 
 <template>
@@ -14,6 +34,21 @@ import { brands } from '@/data/brands'
         </p>
       </RevealOnScroll>
     </div>
+
+    <!--
+      Filtro SVG que tinge de BRANCO os logos sem cor propria (ver
+      needsWhiteTint acima). Mesma tecnica feColorMatrix calibrada para o
+      dourado antes (commit dd71a37): zera R/G/B e poe uma constante 1 em
+      cada canal (branco puro), preservando o alfa original — bordas
+      anti-aliased continuam suaves, e a cor sai exata, sem tentativa e
+      erro. So os logos SEM cor propria recebem isso; Ford, Hyundai, Fiat
+      e Chevrolet mantem a cor real da marca.
+    -->
+    <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+      <filter id="white-tint" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0" />
+      </filter>
+    </svg>
 
     <!--
       Marquee 100% CSS (mesma tecnica do Valdeci Auto Center, projeto
@@ -34,6 +69,7 @@ import { brands } from '@/data/brands'
           :src="brand.logo"
           :alt="brand.name"
           class="h-9 w-28 shrink-0 object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
+          :class="{ 'white-logo': needsWhiteTint.has(brand.name) }"
           loading="lazy"
         />
       </div>
@@ -54,6 +90,10 @@ import { brands } from '@/data/brands'
 
 .brands-track {
   animation: brands-scroll 36s linear infinite;
+}
+
+.white-logo {
+  filter: url(#white-tint);
 }
 
 .group:hover .brands-track {

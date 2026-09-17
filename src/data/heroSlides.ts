@@ -1,31 +1,27 @@
-import engrenagens from '@/assets/imgs/hero-engrenagens.webp'
-import diagnostico from '@/assets/imgs/hero-diagnostico.webp'
-import freios from '@/assets/imgs/hero-freios.webp'
-import oficina from '@/assets/imgs/hero-oficina.webp'
+import oleo from '@/assets/imgs/hero-oleo.webp'
+import motor from '@/assets/imgs/hero-motor.webp'
+import freio from '@/assets/imgs/hero-freio.webp'
 
 /**
  * Fotos que se alternam no fundo do hero.
  *
- * Todas passam pelo duotone dourado (.photo-gold), entao nao precisam ter a
- * mesma temperatura de cor na origem — e justamente o que permite misturar
- * uma foto em neon com uma em preto e branco sem quebrar a paleta.
+ * Em cor natural (ver HeroSection.vue — sem o duotone .photo-gold, por
+ * pedido do cliente com referencia visual). Como nao ha mais filtro
+ * unificando a temperatura de cor, a normalizacao de luminancia no passo
+ * de build (ver docs/imagens.md) e o que mantem a rotacao sem piscar.
  *
- * Criterio para entrar aqui: ser escura, ter assunto reconhecivel num relance
- * e manter o interesse na METADE DIREITA do quadro — a esquerda fica atras da
- * coluna de texto depois do recorte diagonal no desktop. Uma foto de faiscas
- * de esmerilhadeira foi descartada por exatamente isso: o unico ponto de
- * interesse dela caia na parte coberta.
+ * Criterio para entrar aqui: ter assunto reconhecivel num relance e manter
+ * o interesse na METADE DIREITA do quadro — a esquerda fica atras do painel
+ * opaco depois do recorte diagonal no desktop.
  *
- * As quatro sao normalizadas na mesma media de luminancia no passo de build
- * (ver docs/imagens.md). Sem isso a rotacao pisca: a foto de origem mais
- * escura tinha media 18 contra 48 da mais clara, e o filtro CSS e unico.
- *
- * Origem: Pexels (licenca livre para uso comercial, sem atribuicao exigida).
+ * Origem: fotos enviadas pelo cliente (Unsplash, licenca livre para uso
+ * comercial). Duas delas tinham marca de fabricante em destaque —
+ * "Mercedes-Benz" no frasco de oleo e "Audi ceramic" na pinca de freio —
+ * o cliente revisou e autorizou o uso como esta.
  * Substituir por fotos reais da oficina assim que o cliente enviar.
  */
 export const heroSlides = [
-  { src: engrenagens, label: 'Engrenagens de câmbio' },
-  { src: diagnostico, label: 'Diagnóstico sob o veículo' },
-  { src: freios, label: 'Sistema de freios' },
-  { src: oficina, label: 'Oficina' },
+  { src: oleo, label: 'Troca de óleo' },
+  { src: motor, label: 'Diagnóstico de motor' },
+  { src: freio, label: 'Sistema de freios' },
 ]

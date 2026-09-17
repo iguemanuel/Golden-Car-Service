@@ -23,20 +23,25 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
 <template>
   <section id="inicio" class="relative isolate overflow-hidden bg-ink-950 pt-20">
     <!--
-      Foto de fundo em COR NATURAL (pedido explicito do cliente, com
-      referencia visual: painel esquerdo opaco + foto normal a direita,
-      sem duotone). O utilitario .photo-gold (grayscale + tingimento)
-      continua em styles/index.css para uso futuro, mas nao e aplicado aqui.
+      Foto de fundo em COR NATURAL, dividida em duas zonas (pedido explicito
+      do cliente, com referencia visual: NAO um painel opaco — a MESMA foto,
+      borrada e com um veu translucido, mostrando a imagem por baixo).
 
-      Mobile: cobre o hero inteiro e o texto fica sobre ela, com um degrade
-      escuro garantindo contraste.
-      Desktop (lg+): o clip-path recorta a foto em diagonal e ela ocupa so a
-      metade direita, deixando o texto na esquerda sobre o painel opaco.
+      A primeira versao usava um painel esquerdo 100% solido e uma tira fina
+      de blur so na costura, decorativa, sem ligacao com a foto real. Isso
+      foi descartado: a zona esquerda inteira agora e a propria foto,
+      desfocada, com o veu translucido do bloco seguinte por cima — nao uma
+      cor chapada.
+
+      Mobile: foto nitida cobrindo o hero inteiro, sem clip-path (o filtro
+      `lg:` so entra a partir do breakpoint) — o texto fica sobre ela com o
+      veu simples do bloco seguinte.
+      Desktop (lg+): duas copias da MESMA foto (mesmo src, sem requisicao
+      extra) — uma nitida clipada na diagonal direita, outra borrada
+      (filter: blur) clipada no complemento exato a esquerda. A zona
+      esquerda inteira fica desfocada, nao so uma tira na juncao.
     -->
-    <div
-      class="absolute inset-0 -z-10 lg:[clip-path:polygon(50%_0,100%_0,100%_100%,40%_100%)]"
-      aria-hidden="true"
-    >
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
       <!--
         As fotos ficam empilhadas e trocam por opacidade. Somente as liberadas
         por `allowed` sao montadas: a primeira entra na hora (e o LCP), as
@@ -46,7 +51,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
         <img
           :src="slide.src"
           alt=""
-          class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out"
+          class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out lg:[clip-path:polygon(50%_0,100%_0,100%_100%,40%_100%)]"
           :class="i === current ? 'opacity-100' : 'opacity-0'"
           width="1280"
           height="960"
@@ -54,32 +59,10 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
           :loading="i === 0 ? 'eager' : 'lazy'"
         />
 
-        <!--
-          Transicao borrada perto da costura, como na referencia: a foto entra
-          nitida a direita e desfoca conforme se aproxima do painel opaco, em
-          vez de terminar numa linha diagonal seca.
-
-          E a MESMA imagem duplicada (o navegador reusa do cache, sem
-          requisicao extra) com filter: blur() e um mask-image que a apaga
-          conforme se afasta da costura. Foi tentado primeiro com
-          backdrop-filter num unico elemento por cima da foto — mais barato —
-          mas backdrop-filter nao renderiza de forma confiavel em todo
-          compositor (confirmado em screenshot headless com o blur computado
-          e nao pintado). filter: blur num <img> normal e um caminho de
-          rasterizacao mais basico e universal.
-
-          Os stops do gradiente sao em % da largura TOTAL do elemento (1440px
-          num desktop comum), nao da area visivel apos o clip-path — que so
-          comeca por volta de 40-50% (onde a diagonal libera a foto). Um
-          gradiente pensado como "0% a 40%" desaparece inteiro dentro da
-          area ja cortada, e nenhum blur chega a aparecer. Por isso o inicio
-          do gradiente fica alinhado com a propria diagonal (38%-50%, a
-          mesma faixa do clip-path acima) e so dali para a direita ele apaga.
-        -->
         <img
           :src="slide.src"
           alt=""
-          class="absolute inset-0 hidden h-full w-full object-cover blur-2xl transition-opacity duration-1000 ease-in-out lg:block [-webkit-mask-image:linear-gradient(to_right,black_38%,black_50%,transparent_80%)] [mask-image:linear-gradient(to_right,black_38%,black_50%,transparent_80%)]"
+          class="absolute inset-0 hidden h-full w-full object-cover blur-2xl transition-opacity duration-1000 ease-in-out lg:block lg:[clip-path:polygon(0_0,50%_0,40%_100%,0_100%)]"
           :class="i === current ? 'opacity-100' : 'opacity-0'"
           width="1280"
           height="960"
@@ -90,18 +73,16 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
     </div>
 
     <!--
-      Painel esquerdo OPACO, recortado no complemento exato da diagonal da foto.
-      Antes aqui havia um degrade escuro, que deixava a foto vazar por baixo e
-      criava uma faixa suja na transicao. Solido resolve: preto limpo a
-      esquerda, filete dourado, foto a direita.
-      So no desktop — no mobile a foto e full-bleed atras do texto.
+      Veu translucido sobre a zona esquerda desfocada — nao opaco. E o que
+      faz a foto continuar parcialmente visivel atras do texto (o pedido
+      original: "metade opaco e metade mostrando a imagem").
     -->
     <div
-      class="absolute inset-0 -z-10 hidden bg-ink-950 lg:block lg:[clip-path:polygon(0_0,50%_0,40%_100%,0_100%)]"
+      class="absolute inset-0 -z-10 hidden bg-ink-950/60 lg:block lg:[clip-path:polygon(0_0,50%_0,40%_100%,0_100%)]"
       aria-hidden="true"
     ></div>
 
-    <!-- Escurecimento do texto no mobile, onde a foto fica atras dele -->
+    <!-- Veu simples no mobile, onde a foto e full-bleed atras do texto -->
     <div class="absolute inset-0 -z-10 bg-ink-950/75 lg:hidden" aria-hidden="true"></div>
 
     <!--

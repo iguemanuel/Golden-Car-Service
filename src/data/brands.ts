@@ -1,26 +1,45 @@
+import volkswagen from '@/assets/imgs/brands/volkswagen.svg'
+import chevrolet from '@/assets/imgs/brands/chevrolet.svg'
+import fiat from '@/assets/imgs/brands/fiat.svg'
+import ford from '@/assets/imgs/brands/ford.svg'
+import toyota from '@/assets/imgs/brands/toyota.svg'
+import honda from '@/assets/imgs/brands/honda.svg'
+import hyundai from '@/assets/imgs/brands/hyundai.svg'
+import renault from '@/assets/imgs/brands/renault.svg'
+import nissan from '@/assets/imgs/brands/nissan.svg'
+import bmw from '@/assets/imgs/brands/BMW.svg'
+import mercedes from '@/assets/imgs/brands/mercedes.svg'
+import audi from '@/assets/imgs/brands/audi.svg'
+import jeep from '@/assets/imgs/brands/jeep.svg'
+import mitsubishi from '@/assets/imgs/brands/mitsubishi.svg'
+
 /**
- * Marcas atendidas — exibidas como texto, não como logo oficial da marca.
+ * Marcas atendidas, com o logo oficial de cada uma.
  *
- * Decisão deliberada: usar o wordmark de outra empresa como imagem é um
- * passo a mais na direção de "parece afiliação oficial" do que dizer em
- * texto simples "atendemos esta marca" (uso nominativo, prática comum e
- * aceita em oficinas multimarca). Evita depender de arquivo de logo de
- * terceiro e o risco de parecer endosso — mesma cautela já aplicada nas
- * fotos do hero com marca de fabricante visível.
+ * Uso nominativo ("atendemos esta marca"), pratica comum e aceita em
+ * oficina multimarca — nao e diferente de mostrar o logo em texto, so
+ * mais reconhecivel. Mesmos arquivos SVG do Valdeci Auto Center
+ * (github.com/iguemanuel/Valdeci-Auto-Center), projeto anterior do mesmo
+ * autor, ja publicados e em uso num site real.
  */
-export const brands: string[] = [
-  'Volkswagen',
-  'Chevrolet',
-  'Fiat',
-  'Ford',
-  'Toyota',
-  'Honda',
-  'Hyundai',
-  'Renault',
-  'Nissan',
-  'BMW',
-  'Mercedes-Benz',
-  'Audi',
-  'Jeep',
-  'Mitsubishi',
+export interface Brand {
+  name: string
+  logo: string
+}
+
+export const brands: Brand[] = [
+  { name: 'Volkswagen', logo: volkswagen },
+  { name: 'Chevrolet', logo: chevrolet },
+  { name: 'Fiat', logo: fiat },
+  { name: 'Ford', logo: ford },
+  { name: 'Toyota', logo: toyota },
+  { name: 'Honda', logo: honda },
+  { name: 'Hyundai', logo: hyundai },
+  { name: 'Renault', logo: renault },
+  { name: 'Nissan', logo: nissan },
+  { name: 'BMW', logo: bmw },
+  { name: 'Mercedes-Benz', logo: mercedes },
+  { name: 'Audi', logo: audi },
+  { name: 'Jeep', logo: jeep },
+  { name: 'Mitsubishi', logo: mitsubishi },
 ]

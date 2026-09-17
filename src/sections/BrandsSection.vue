@@ -3,24 +3,47 @@ import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import { brands } from '@/data/brands'
 
 /**
- * Logos desenhados em preto/quase-preto sobre fundo transparente — sem
- * cor propria que se destaque no ink-900 do site. Confirmado inspecionando
- * o fill/stroke de cada SVG e depois na tela renderizada (ver commits
- * anteriores). Ford, Hyundai, Fiat e Chevrolet tem cor propria e ficam
- * como estao; so estes recebem o filtro que os deixa em branco.
+ * Cor oficial de cada marca, para os logos que nao tem cor propria
+ * suficiente no SVG (a maioria vinha em preto/quase-preto, sem contraste
+ * sobre o ink-900 do site). Hex pesquisados e conferidos por marca — nao
+ * inventados — nas paginas oficiais/guias de marca de cada fabricante.
+ *
+ * Ford, Chevrolet, Hyundai e Mitsubishi ficam de fora: o proprio SVG ja
+ * usa a cor certa (conferido contra a pesquisa) ou, no caso do Chevrolet,
+ * o gradiente multi-tom nativo ja renderiza bem — aplicar um tingimento
+ * solido so pioraria, achatando o efeito cromado numa cor chapada.
+ * BMW fica de fora a pedido do cliente (mantem a cor original mesmo com
+ * contraste baixo).
  */
-const needsWhiteTint = new Set([
-  'Toyota',
-  'Honda',
-  'Nissan',
-  'Volkswagen',
-  'Mercedes-Benz',
-  'Audi',
-  'Jeep',
-  'Renault', // sem fill explicito no SVG — cai no preto padrao
-  'BMW', // emblema cromado 100% opaco (mesma familia do Fiat) — vira
-  // circulo solido branco em vez de preto invisivel
-])
+const brandColors: Record<string, string> = {
+  Toyota: '#EB0A1E',
+  Honda: '#CC0000',
+  Nissan: '#C3002F',
+  Volkswagen: '#001E50',
+  Renault: '#EFDF00',
+  Fiat: '#C41E3A',
+}
+
+/**
+ * Mercedes-Benz, Audi e Jeep NAO tem uma cor de marca solida de verdade —
+ * o emblema oficial das tres e cromado/prata/preto; qualquer hex aqui
+ * seria uma cor de marketing digital, nao do logo. Ficam em branco em vez
+ * de uma cor inventada.
+ */
+const whiteTint = new Set(['Mercedes-Benz', 'Audi', 'Jeep'])
+
+/** ids de elemento precisam ser validos e unicos — hifen e o unico caractere especial que sobra do nome da marca. */
+function filterId(name: string) {
+  return `tint-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+}
+
+/** Converte #RRGGBB nas constantes 0..1 que o feColorMatrix espera. */
+function colorMatrix(hex: string) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+  return `0 0 0 0 ${r.toFixed(4)}  0 0 0 0 ${g.toFixed(4)}  0 0 0 0 ${b.toFixed(4)}  0 0 0 1 0`
+}
 </script>
 
 <template>
@@ -36,15 +59,21 @@ const needsWhiteTint = new Set([
     </div>
 
     <!--
-      Filtro SVG que tinge de BRANCO os logos sem cor propria (ver
-      needsWhiteTint acima). Mesma tecnica feColorMatrix calibrada para o
-      dourado antes (commit dd71a37): zera R/G/B e poe uma constante 1 em
-      cada canal (branco puro), preservando o alfa original — bordas
-      anti-aliased continuam suaves, e a cor sai exata, sem tentativa e
-      erro. So os logos SEM cor propria recebem isso; Ford, Hyundai, Fiat
-      e Chevrolet mantem a cor real da marca.
+      Um filtro SVG por marca tingida (feColorMatrix zera R/G/B e poe a
+      cor oficial como constante, preservando o alfa original — a mesma
+      tecnica calibrada nos commits anteriores para o dourado e o branco,
+      agora generalizada para qualquer hex). Cor exata, sem tentativa e
+      erro, bordas anti-aliased continuam suaves.
     -->
     <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+      <filter
+        v-for="(hex, name) in brandColors"
+        :id="filterId(name)"
+        :key="name"
+        color-interpolation-filters="sRGB"
+      >
+        <feColorMatrix type="matrix" :values="colorMatrix(hex)" />
+      </filter>
       <filter id="white-tint" color-interpolation-filters="sRGB">
         <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0" />
       </filter>
@@ -69,7 +98,8 @@ const needsWhiteTint = new Set([
           :src="brand.logo"
           :alt="brand.name"
           class="h-9 w-28 shrink-0 object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
-          :class="{ 'white-logo': needsWhiteTint.has(brand.name) }"
+          :class="{ 'white-logo': whiteTint.has(brand.name) }"
+          :style="brandColors[brand.name] ? { filter: `url(#${filterId(brand.name)})` } : {}"
           loading="lazy"
         />
       </div>

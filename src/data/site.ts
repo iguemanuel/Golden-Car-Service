@@ -66,6 +66,13 @@ export const site = {
 
   /** Dominio pretendido, ainda nao registrado. Usado nas meta tags canonicas. */
   url: 'https://goldencarservice.com.br',
+
+  /**
+   * Ficha no Google Maps. O `!9m1!1b1` abre direto na aba de avaliacoes.
+   * CID 0xf64678b9e55c0b55 — conferido na ficha publica da oficina.
+   */
+  googleMapsUrl:
+    'https://www.google.com/maps/place/Golden+Car+Service/@-25.3593592,-51.4648012,17z/data=!4m8!3m7!1s0x94ef37ab873424f1:0xf64678b9e55c0b55!8m2!3d-25.3593592!4d-51.4648012!9m1!1b1',
 } as const
 
 /** Endereco em uma linha, para footer e meta tags. */

@@ -6,8 +6,10 @@ import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import { highlights } from '@/data/highlights'
 import { site } from '@/data/site'
 import { useWhatsApp } from '@/composables/useWhatsApp'
+import { useSlideshow } from '@/composables/useSlideshow'
+import { heroSlides } from '@/data/heroSlides'
 
-import heroImage from '@/assets/imgs/hero-engrenagens.webp'
+const { current, allowed, goTo } = useSlideshow(heroSlides.length)
 
 const { buildUrl } = useWhatsApp()
 const whatsappUrl = buildUrl(
@@ -32,35 +34,59 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
       class="photo-gold absolute inset-0 -z-10 lg:[clip-path:polygon(50%_0,100%_0,100%_100%,40%_100%)]"
       aria-hidden="true"
     >
+      <!--
+        As fotos ficam empilhadas e trocam por opacidade. Somente as liberadas
+        por `allowed` sao montadas: a primeira entra na hora (e o LCP), as
+        outras so depois, para nao disputar banda com ela.
+      -->
       <img
-        :src="heroImage"
+        v-for="(slide, i) in heroSlides.slice(0, allowed)"
+        :key="slide.src"
+        :src="slide.src"
         alt=""
-        class="h-full w-full object-cover"
-        width="1400"
-        height="1050"
-        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out"
+        :class="i === current ? 'opacity-100' : 'opacity-0'"
+        width="1280"
+        height="960"
+        :fetchpriority="i === 0 ? 'high' : 'low'"
+        :loading="i === 0 ? 'eager' : 'lazy'"
       />
     </div>
 
     <!--
-      Escurecimento do texto. No mobile cobre tudo; no desktop precisa terminar
-      ANTES da diagonal (que comeca em 40%), senao o preto opaco cobre o filete
-      dourado — os dois estao em -z-10 e quem vem depois no DOM pinta por cima.
+      Painel esquerdo OPACO, recortado no complemento exato da diagonal da foto.
+      Antes aqui havia um degrade escuro, que deixava a foto vazar por baixo e
+      criava uma faixa suja na transicao. Solido resolve: preto limpo a
+      esquerda, filete dourado, foto a direita.
+      So no desktop — no mobile a foto e full-bleed atras do texto.
     -->
     <div
-      class="absolute inset-0 -z-10 bg-ink-950/75 lg:bg-[linear-gradient(100deg,var(--color-ink-950)_0%,var(--color-ink-950)_26%,transparent_44%)]"
+      class="absolute inset-0 -z-10 hidden bg-ink-950 lg:block lg:[clip-path:polygon(0_0,50%_0,40%_100%,0_100%)]"
       aria-hidden="true"
     ></div>
 
-    <!-- Brilho dourado radial -->
+    <!-- Escurecimento do texto no mobile, onde a foto fica atras dele -->
+    <div class="absolute inset-0 -z-10 bg-ink-950/75 lg:hidden" aria-hidden="true"></div>
+
+    <!-- Brilho dourado radial, para o painel solido nao ficar chapado -->
     <div
-      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_20%_10%,rgba(212,175,55,0.14),transparent_70%)]"
+      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_55%_45%_at_18%_12%,rgba(212,175,55,0.10),transparent_70%)]"
+      aria-hidden="true"
+    ></div>
+
+    <!--
+      Escurecimento no topo, atras da navbar. Com o painel esquerdo opaco a
+      foto passou a aparecer em brilho cheio, e os links da navbar que caem
+      sobre ela perdiam contraste.
+    -->
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-[linear-gradient(to_bottom,var(--color-ink-950)_0%,transparent_100%)] opacity-85"
       aria-hidden="true"
     ></div>
 
     <!--
       Filete dourado sobre a diagonal. Fica por ULTIMO de proposito: e o unico
-      jeito de ele ficar visivel acima do scrim e do brilho.
+      jeito de ele ficar visivel acima dos demais planos.
     -->
     <div
       class="absolute inset-0 -z-10 hidden bg-gold-500 lg:block lg:[clip-path:polygon(50%_0,50.2%_0,40.2%_100%,40%_100%)]"
@@ -124,6 +150,27 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
           </ul>
         </RevealOnScroll>
       </div>
+    </div>
+
+    <!--
+      Indicadores da rotacao. Somente no desktop: no mobile a foto fica atras
+      do texto e os pontos so competiriam com a leitura.
+    -->
+    <div
+      class="absolute right-8 bottom-36 z-10 hidden items-center gap-2.5 lg:flex"
+      role="group"
+      aria-label="Trocar foto de fundo"
+    >
+      <button
+        v-for="(slide, i) in heroSlides"
+        :key="slide.src"
+        type="button"
+        class="h-1.5 cursor-pointer rounded-full transition-all duration-300"
+        :class="i === current ? 'w-7 bg-gold-500' : 'w-1.5 bg-white/30 hover:bg-white/60'"
+        :aria-label="slide.label"
+        :aria-current="i === current"
+        @click="goTo(i)"
+      ></button>
     </div>
 
     <!-- Faixa de numeros, encostada na base do hero -->

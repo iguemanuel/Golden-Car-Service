@@ -126,8 +126,13 @@
     isolation: isolate;
   }
 
+  /*
+    As fotos de origem sao normalizadas na mesma media de luminancia (ver o
+    passo de build em docs/imagens.md), entao aqui o brilho fica neutro: nao
+    da para compensar exposicao no CSS quando cada foto entra com uma.
+  */
   .photo-gold > img {
-    filter: grayscale(1) contrast(1.05) brightness(1.15);
+    filter: grayscale(1) contrast(1.05);
   }
 
   .photo-gold::before,

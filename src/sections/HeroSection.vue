@@ -104,7 +104,17 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
       aria-hidden="true"
     ></div>
 
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!--
+      SEM mx-auto max-w-7xl aqui de proposito — diferente do resto do site.
+      Esse padrao centraliza o conteudo no VIEWPORT inteiro, e em telas largas
+      (1728px+) o gutter cresce muito rapido: o texto (largura fixa, max-w-lg)
+      passava a quase encostar ou cruzar a diagonal perto da base, com um vao
+      enorme sobrando a esquerda — confirmado renderizando em 1728/1920px.
+      `lg:px-[6vw]` cresce na mesma proporcao da diagonal (que tambem e %
+      do viewport), entao a distancia entre o fim do texto e a diagonal
+      fica estavel em qualquer largura, em vez de fechar conforme a tela cresce.
+    -->
+    <div class="px-4 sm:px-6 lg:px-[6vw]">
       <div
         class="flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center gap-7 py-20 text-center lg:max-w-lg lg:items-start lg:text-left"
       >

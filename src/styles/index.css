@@ -101,6 +101,59 @@
   .border-hairline-gold {
     border-color: color-mix(in srgb, var(--color-gold-500) 22%, transparent);
   }
+
+  /*
+    Duotone dourado.
+
+    O problema: foto de oficina vem em qualquer temperatura de cor — neon azul,
+    parede verde, macacao laranja — e tudo isso briga com o dourado da marca.
+    A solucao e nao procurar foto dourada, e sim tingir qualquer foto:
+
+      1. a imagem vira escala de cinza (mata a cor original);
+      2. uma camada dourada em `mix-blend-mode: color` devolve matiz e saturacao,
+         preservando a luminosidade da foto — isso e um duotone de verdade;
+      3. uma camada preta em `multiply` afunda as sombras para a foto casar com
+         o fundo ink-950 sem borda visivel.
+
+    IMPORTANTE: esta classe NAO define `position`. Ela vive na mesma layer que
+    as utilities do Tailwind e, por vir depois na folha, um `position` aqui
+    venceria um `absolute`/`relative` vindo do template — foi exatamente o que
+    quebrou o hero na primeira tentativa. Quem usa a classe declara o
+    posicionamento (`relative` ou `absolute`), que as pseudo-camadas precisam
+    de um ancestral posicionado.
+  */
+  .photo-gold {
+    isolation: isolate;
+  }
+
+  .photo-gold > img {
+    filter: grayscale(1) contrast(1.05) brightness(1.15);
+  }
+
+  .photo-gold::before,
+  .photo-gold::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Matiz dourada */
+  .photo-gold::before {
+    background: linear-gradient(150deg, var(--color-gold-400), var(--color-gold-700));
+    mix-blend-mode: color;
+    opacity: 0.75;
+  }
+
+  /* Sombras afundadas, para a foto se dissolver no fundo */
+  .photo-gold::after {
+    background: linear-gradient(
+      150deg,
+      transparent 40%,
+      color-mix(in srgb, var(--color-ink-950) 38%, transparent) 100%
+    );
+    mix-blend-mode: multiply;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

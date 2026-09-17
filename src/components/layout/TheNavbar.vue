@@ -72,10 +72,18 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
       </ul>
 
       <div class="flex items-center gap-3">
-        <BaseButton :href="whatsappUrl" external class="hidden sm:inline-flex">
-          <MessageCircle :size="16" aria-hidden="true" />
-          Orçamento
-        </BaseButton>
+        <!--
+          O wrapper e que esconde o CTA no mobile, nao uma classe `hidden` no
+          BaseButton: o proprio botao aplica `inline-flex`, e as duas sao
+          utilities de `display` na mesma layer — o `inline-flex` venceria e o
+          botao continuaria visivel, empurrando o hamburguer fora da tela.
+        -->
+        <span class="hidden sm:block">
+          <BaseButton :href="whatsappUrl" external>
+            <MessageCircle :size="16" aria-hidden="true" />
+            Orçamento
+          </BaseButton>
+        </span>
 
         <!-- Menu mobile -->
         <DialogRoot v-model:open="mobileOpen">

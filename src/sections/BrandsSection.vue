@@ -19,7 +19,6 @@ const brandColors: Record<string, string> = {
   Toyota: '#EB0A1E',
   Honda: '#CC0000',
   Nissan: '#C3002F',
-  Volkswagen: '#001E50',
   Renault: '#EFDF00',
   Fiat: '#C41E3A',
 }
@@ -29,8 +28,11 @@ const brandColors: Record<string, string> = {
  * o emblema oficial das tres e cromado/prata/preto; qualquer hex aqui
  * seria uma cor de marketing digital, nao do logo. Ficam em branco em vez
  * de uma cor inventada.
+ *
+ * Volkswagen tambem fica em branco, a pedido do cliente: o azul oficial
+ * (#001E50) e escuro demais e quase some contra o ink-900 do site.
  */
-const whiteTint = new Set(['Mercedes-Benz', 'Audi', 'Jeep'])
+const whiteTint = new Set(['Mercedes-Benz', 'Audi', 'Jeep', 'Volkswagen'])
 
 /** ids de elemento precisam ser validos e unicos — hifen e o unico caractere especial que sobra do nome da marca. */
 function filterId(name: string) {
@@ -64,6 +66,14 @@ function colorMatrix(hex: string) {
       tecnica calibrada nos commits anteriores para o dourado e o branco,
       agora generalizada para qualquer hex). Cor exata, sem tentativa e
       erro, bordas anti-aliased continuam suaves.
+
+      feMorphology (dilate) roda ANTES do feColorMatrix: alguns SVGs (Fiat
+      e' o caso confirmado) sao montados com varios paths/gradientes
+      adjacentes formando o disco do emblema, e a costura entre dois deles
+      nao fecha 100% — sobra uma linha fina sem alfa total, visivel como um
+      entalhe na borda depois de tingido de uma cor solida. Dilatar o alfa
+      em 1 unidade antes de colorir fecha essa costura sem distorcer o
+      contorno geral do logo (a diferenca e sub-pixel no tamanho exibido).
     -->
     <svg width="0" height="0" aria-hidden="true" style="position: absolute">
       <filter
@@ -72,6 +82,7 @@ function colorMatrix(hex: string) {
         :key="name"
         color-interpolation-filters="sRGB"
       >
+        <feMorphology operator="dilate" radius="1" />
         <feColorMatrix type="matrix" :values="colorMatrix(hex)" />
       </filter>
       <filter id="white-tint" color-interpolation-filters="sRGB">
@@ -92,16 +103,32 @@ function colorMatrix(hex: string) {
       class="group relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
     >
       <div class="brands-track flex w-max items-center gap-14">
-        <img
+        <!--
+          Moldura h-9 w-28 fixa + overflow-hidden em todo item, para o
+          Chevrolet poder recortar a palavra "CHEVROLET" que vem desenhada
+          embaixo do laço no SVG (nao da para remover so o texto editando o
+          arquivo — sao ~50 paths de gradiente sem id descritivo, dificil
+          isolar com seguranca). A imagem do Chevrolet e exibida maior
+          (h-14) e alinhada ao topo (object-top); soo o laço cabe na
+          moldura de 36px, o texto fica cortado por baixo.
+        -->
+        <div
           v-for="(brand, i) in [...brands, ...brands, ...brands]"
           :key="`${brand.name}-${i}`"
-          :src="brand.logo"
-          :alt="brand.name"
-          class="h-9 w-28 shrink-0 object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
-          :class="{ 'white-logo': whiteTint.has(brand.name) }"
-          :style="brandColors[brand.name] ? { filter: `url(#${filterId(brand.name)})` } : {}"
-          loading="lazy"
-        />
+          class="h-9 w-28 shrink-0 overflow-hidden"
+        >
+          <img
+            :src="brand.logo"
+            :alt="brand.name"
+            class="w-28 object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
+            :class="[
+              whiteTint.has(brand.name) ? 'white-logo' : '',
+              brand.name === 'Chevrolet' ? 'h-14 object-top' : 'h-9',
+            ]"
+            :style="brandColors[brand.name] ? { filter: `url(#${filterId(brand.name)})` } : {}"
+            loading="lazy"
+          />
+        </div>
       </div>
     </div>
   </section>

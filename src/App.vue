@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * FASE 2 — hero pronto.
+ * FASE 3 — cambio automatico, servicos e marcas prontos.
  *
  * As <section> restantes ainda sao placeholders rotulados com a fase em que
  * serao preenchidos.
@@ -10,10 +10,11 @@ import TheFooter from '@/components/layout/TheFooter.vue'
 import WhatsAppFloat from '@/components/layout/WhatsAppFloat.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import HeroSection from '@/sections/HeroSection.vue'
+import TransmissionSection from '@/sections/TransmissionSection.vue'
+import ServicesSection from '@/sections/ServicesSection.vue'
+import BrandsSection from '@/sections/BrandsSection.vue'
 
 const placeholders = [
-  { id: 'cambio', eyebrow: 'Fase 3', title: 'Câmbio automático', tone: 'bg-ink-900' },
-  { id: 'servicos', eyebrow: 'Fase 3', title: 'Serviços', tone: 'bg-ink-950' },
   { id: 'avaliacoes', eyebrow: 'Fase 4', title: 'Avaliações', tone: 'bg-ink-900' },
   { id: 'contato', eyebrow: 'Fase 5', title: 'Contato', tone: 'bg-ink-950' },
 ]
@@ -24,6 +25,9 @@ const placeholders = [
 
   <main>
     <HeroSection />
+    <TransmissionSection />
+    <ServicesSection />
+    <BrandsSection />
 
     <section
       v-for="s in placeholders"

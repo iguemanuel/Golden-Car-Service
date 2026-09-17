@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Clock, ExternalLink, Instagram, Mail, MapPin, Phone, Send } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
@@ -11,6 +11,9 @@ import { useWhatsApp } from '@/composables/useWhatsApp'
 import { STAGGER_STEP } from '@/utils/motion'
 
 const { open } = useWhatsApp()
+
+const featuredVideo = computed(() => instagramMedia.find((item) => item.kind === 'video'))
+const galleryPhotos = computed(() => instagramMedia.filter((item) => item.kind === 'photo'))
 
 const name = ref('')
 const vehicle = ref('')
@@ -199,11 +202,11 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
         (ver o comentario em src/data/instagramMedia.ts).
       -->
       <RevealOnScroll v-if="instagramMedia.length > 0" v-slot="{ revealed }" :delay="STAGGER_STEP * 3">
-        <div class="mt-20 border-t border-ink-700/60 pt-16">
+        <div class="mt-16 border-t border-ink-700/60 pt-12">
           <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p class="font-display text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
-                Instagram
+                Oficina
               </p>
               <h3 class="mt-2 text-2xl">Bastidores da oficina</h3>
             </div>
@@ -214,23 +217,15 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
           </div>
 
           <!--
-            Cartoes verticais (tipo Stories) de altura fixa, todos com a
-            mesma proporcao retrato (aspect-[3/4]) — inclusive o video,
-            nao so as fotos. object-cover cuida do recorte de qualquer
-            imagem de origem, entao a orientacao real do arquivo (a nova
-            foto do interior veio em paisagem) nao importa.
-
-            Grid simples ao inves do layout anterior (video ocupando 2
-            linhas via row-span, fotos preenchendo o resto): aquele so
-            funcionava para exatamente 3 itens. Este escala sozinho para
-            qualquer quantidade — 2 colunas no mobile, uma linha unica a
-            partir do sm.
+            Video em destaque + grade compacta de fotos. No desktop o
+            reel ocupa a coluna esquerda, na mesma altura das 6 fotos
+            (3x2) a direita. No mobile o video vem primeiro, com altura
+            limitada, para o bloco nao virar um mural de 3 linhas.
           -->
-          <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div class="grid items-stretch gap-3 md:grid-cols-2">
             <div
-              v-for="item in instagramMedia"
-              :key="item.src"
-              class="aspect-[3/4] overflow-hidden rounded-xl border border-ink-700 bg-ink-900"
+              v-if="featuredVideo"
+              class="relative h-72 overflow-hidden rounded-xl border border-ink-700 bg-ink-900 md:h-auto md:min-h-0"
             >
               <!--
                 O video (3,5MB, ~77% do peso total do site) so ganha `src`
@@ -242,27 +237,34 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
                 Contato nunca baixa o video.
               -->
               <video
-                v-if="item.kind === 'video'"
-                :src="revealed ? item.src : undefined"
+                :src="revealed ? featuredVideo.src : undefined"
                 preload="none"
-                :width="item.width"
-                :height="item.height"
+                :width="featuredVideo.width"
+                :height="featuredVideo.height"
                 autoplay
                 muted
                 loop
                 playsinline
                 controls
-                class="h-full w-full object-cover"
+                class="absolute inset-0 h-full w-full object-cover"
               ></video>
-              <img
-                v-else
-                :src="item.src"
-                :alt="item.alt"
-                loading="lazy"
-                :width="item.width"
-                :height="item.height"
-                class="h-full w-full object-cover"
-              />
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 sm:gap-3">
+              <div
+                v-for="item in galleryPhotos"
+                :key="item.src"
+                class="aspect-[3/4] overflow-hidden rounded-xl border border-ink-700 bg-ink-900"
+              >
+                <img
+                  :src="item.src"
+                  :alt="item.alt"
+                  loading="lazy"
+                  :width="item.width"
+                  :height="item.height"
+                  class="h-full w-full object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>

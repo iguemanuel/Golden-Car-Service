@@ -37,3 +37,6 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Originais crus da oficina (HEIC/JPG). Galeria usa WebP em src/assets/insta/
+src/assets/loja/

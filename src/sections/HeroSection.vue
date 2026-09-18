@@ -2,6 +2,7 @@
 import { ArrowRight } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
+import CabBadge from '@/components/ui/CabBadge.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import { site } from '@/data/site'
 import { useWhatsApp } from '@/composables/useWhatsApp'
@@ -169,6 +170,17 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
               {{ word }}
             </li>
           </ul>
+        </RevealOnScroll>
+
+        <!--
+          Selo da CAB. Fecha a coluna de texto de proposito: a faixa de
+          numeros que ficava aqui saiu porque os valores eram inventados
+          (ver o comentario no fim desta secao), e o hero ficou sem nenhum
+          elemento de credibilidade sustentando o "especialista em cambio
+          automatico" do titulo. O selo e uma credencial real, verificavel.
+        -->
+        <RevealOnScroll :delay="STAGGER_STEP * 5">
+          <CabBadge />
         </RevealOnScroll>
       </div>
     </div>

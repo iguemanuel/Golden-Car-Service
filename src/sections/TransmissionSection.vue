@@ -2,6 +2,7 @@
 import { ArrowRight } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
+import CabBadge from '@/components/ui/CabBadge.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import { transmissionItems } from '@/data/transmission'
@@ -99,6 +100,25 @@ const whatsappUrl = buildUrl(
               loading="lazy"
             />
           </div>
+
+          <!--
+            Carimbo da CAB na borda INFERIOR da moldura, nao dentro dela: a
+            metade de baixo da foto e um pedestal branco de estande, e uma
+            placa clara ali sumiria. Encostado na borda, o selo fica metade
+            sobre o ink-800 da moldura e metade sobre o ink-900 da secao —
+            e dai que vem o contraste. Precisa ser irmao da <div> acima
+            (que tem overflow-hidden), senao seria cortado.
+
+            O transbordo horizontal so entra a partir de sm: pelo mesmo
+            motivo do brilho logo acima — no mobile o padding da secao e
+            px-4 (16px), entao -right-5 (20px) vazaria para fora da tela.
+            Ate sm o carimbo fica dentro da largura da moldura e transborda
+            so na vertical, que e seguro.
+          -->
+          <CabBadge
+            variant="stamp"
+            class="absolute right-4 -bottom-4 z-10 sm:-right-5 sm:-bottom-5"
+          />
         </div>
       </RevealOnScroll>
     </div>

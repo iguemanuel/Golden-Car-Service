@@ -28,7 +28,7 @@ const whatsappUrl = buildUrl(
           <SectionHeading
             align="left"
             eyebrow="A especialidade da casa"
-            title="Câmbio automático"
+            title="Reparo e reformas de câmbio automático completo"
             subtitle="Somos especialistas em transmissão automática."
           />
         </RevealOnScroll>

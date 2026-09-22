@@ -133,7 +133,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
 
         <RevealOnScroll :delay="STAGGER_STEP">
           <h1 class="text-4xl leading-[1.02] sm:text-5xl lg:text-[4rem]">
-            Reparo e reformas de câmbio automático completo
+            Seu câmbio automático
             <span class="block text-gradient-gold">em boas mãos</span>
           </h1>
         </RevealOnScroll>

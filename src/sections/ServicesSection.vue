@@ -17,7 +17,7 @@ import { STAGGER_STEP } from '@/utils/motion'
         />
       </RevealOnScroll>
 
-      <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">
         <RevealOnScroll
           v-for="(service, i) in services"
           :key="service.title"
@@ -27,6 +27,9 @@ import { STAGGER_STEP } from '@/utils/motion'
             :icon="service.icon"
             :title="service.title"
             :description="service.description"
+            :image="service.image"
+            :image-alt="service.imageAlt"
+            :image-position="service.imagePosition"
           />
         </RevealOnScroll>
       </div>

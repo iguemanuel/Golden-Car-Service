@@ -31,8 +31,13 @@ export const transmissionItems: TransmissionItem[] = [
       'Desmontagem, troca de componentes internos e remontagem com os ajustes de fábrica do câmbio automático.',
   },
   {
+    icon: 'Layers',
+    title: 'Automático, CVT, DSG e robotizados',
+    description: 'Atendemos câmbio automático, CVT, DSG, Dualogic, I-Motion e os demais modelos.',
+  },
+  {
     icon: 'ShieldCheck',
-    title: 'Garantia no serviço e nas peças',
-    description: 'Todo reparo de câmbio sai com garantia — sem letra miúda.',
+    title: 'Garantia de 1 ano',
+    description: 'Cobre os serviços realizados em transmissão.',
   },
 ]

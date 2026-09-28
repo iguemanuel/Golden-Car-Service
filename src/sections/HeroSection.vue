@@ -132,13 +132,17 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
         </RevealOnScroll>
 
         <RevealOnScroll :delay="STAGGER_STEP">
+          <CabBadge variant="hero" />
+        </RevealOnScroll>
+
+        <RevealOnScroll :delay="STAGGER_STEP * 2">
           <h1 class="text-4xl leading-[1.02] sm:text-5xl lg:text-[4rem]">
             Seu câmbio automático
             <span class="block text-gradient-gold">em boas mãos</span>
           </h1>
         </RevealOnScroll>
 
-        <RevealOnScroll :delay="STAGGER_STEP * 2">
+        <RevealOnScroll :delay="STAGGER_STEP * 3">
           <p class="max-w-lg text-base text-neutral-300 sm:text-lg">
             Troca de óleo completa do câmbio automático com maquina, diagnósticos eletrônicos e reparo completo do
             câmbio
@@ -148,7 +152,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
           </p>
         </RevealOnScroll>
 
-        <RevealOnScroll :delay="STAGGER_STEP * 3">
+        <RevealOnScroll :delay="STAGGER_STEP * 4">
           <BaseButton :href="whatsappUrl" external size="lg" class="group">
             Fazer orçamento
             <ArrowRight
@@ -160,7 +164,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
         </RevealOnScroll>
 
         <!-- Lista de palavras-chave, no lugar da frase corrida -->
-        <RevealOnScroll :delay="STAGGER_STEP * 4">
+        <RevealOnScroll :delay="STAGGER_STEP * 5">
           <ul
             class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-ink-700/60 pt-5 lg:justify-start"
           >
@@ -175,16 +179,6 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
           </ul>
         </RevealOnScroll>
 
-        <!--
-          Selo da CAB. Fecha a coluna de texto de proposito: a faixa de
-          numeros que ficava aqui saiu porque os valores eram inventados
-          (ver o comentario no fim desta secao), e o hero ficou sem nenhum
-          elemento de credibilidade sustentando o "especialista em cambio
-          automatico" do titulo. O selo e uma credencial real, verificavel.
-        -->
-        <RevealOnScroll :delay="STAGGER_STEP * 5">
-          <CabBadge />
-        </RevealOnScroll>
       </div>
     </div>
 

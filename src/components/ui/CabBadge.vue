@@ -24,27 +24,53 @@ import seloCab from '@/assets/selo-cab.webp'
  * formal junto a rede. Confirmar com a Erica antes de publicar — se for
  * parceria informal, trocar por "Membro da rede" (uma string, aqui).
  */
-withDefaults(defineProps<{ variant?: 'inline' | 'stamp' }>(), { variant: 'inline' })
+const props = withDefaults(defineProps<{ variant?: 'inline' | 'stamp' | 'hero' }>(), {
+  variant: 'inline',
+})
+
+/**
+ * `hero` é o selo grande abaixo do rótulo do início. `stamp` é o carimbo
+ * pequeno da seção de câmbio. `inline` é o tamanho da coluna no celular.
+ */
+const styles = {
+  stamp: {
+    root: 'gap-2 bg-ink-900/90 p-1.5 pr-3 shadow-lg shadow-black/50',
+    chip: 'px-1.5 py-1',
+    mark: 'h-6',
+    title: 'text-[10px]',
+    subtitle: 'text-[10px]',
+  },
+  hero: {
+    root: 'gap-4 bg-ink-900/80 py-3 pr-5 pl-3 shadow-lg shadow-black/40',
+    chip: 'px-3 py-2',
+    mark: 'h-12',
+    title: 'text-sm',
+    subtitle: 'text-sm',
+  },
+  inline: {
+    root: 'gap-3 bg-ink-900/70 py-2 pr-4 pl-2',
+    chip: 'px-2 py-1.5',
+    mark: 'h-7',
+    title: 'text-[11px]',
+    subtitle: 'text-xs',
+  },
+} as const
 </script>
 
 <template>
   <div
     class="inline-flex items-center rounded-xl border border-hairline-gold backdrop-blur-sm"
-    :class="
-      variant === 'stamp'
-        ? 'gap-2 bg-ink-900/90 p-1.5 pr-3 shadow-lg shadow-black/50'
-        : 'gap-3 bg-ink-900/70 py-2 pr-4 pl-2'
-    "
+    :class="styles[props.variant].root"
   >
     <span
       class="flex shrink-0 items-center rounded-lg bg-neutral-100"
-      :class="variant === 'stamp' ? 'px-1.5 py-1' : 'px-2 py-1.5'"
+      :class="styles[props.variant].chip"
     >
       <img
         :src="seloCab"
         alt="Câmbio Automático do Brasil"
         class="w-auto"
-        :class="variant === 'stamp' ? 'h-6' : 'h-7'"
+        :class="styles[props.variant].mark"
         width="360"
         height="166"
         loading="lazy"
@@ -54,11 +80,11 @@ withDefaults(defineProps<{ variant?: 'inline' | 'stamp' }>(), { variant: 'inline
     <span class="text-left">
       <span
         class="block font-display font-bold tracking-[0.14em] text-gold-400 uppercase"
-        :class="variant === 'stamp' ? 'text-[10px]' : 'text-[11px]'"
+        :class="styles[props.variant].title"
       >
         Oficina credenciada
       </span>
-      <span class="block text-neutral-400" :class="variant === 'stamp' ? 'text-[10px]' : 'text-xs'">
+      <span class="block text-neutral-400" :class="styles[props.variant].subtitle">
         Câmbio Automático do Brasil
       </span>
     </span>

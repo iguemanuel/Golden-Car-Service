@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { ArrowRight } from 'lucide-vue-next'
+import { ArrowRight, ShieldCheck } from 'lucide-vue-next'
 
 import BaseButton from '@/components/ui/BaseButton.vue'
 import CabBadge from '@/components/ui/CabBadge.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import { transmissionItems } from '@/data/transmission'
+import { transmissionItems, transmissionWarranty } from '@/data/transmission'
 import { site } from '@/data/site'
-import { resolveIcon } from '@/utils/icons'
 import { useWhatsApp } from '@/composables/useWhatsApp'
 import { STAGGER_STEP } from '@/utils/motion'
 
@@ -28,7 +27,7 @@ const whatsappUrl = buildUrl(
           <SectionHeading
             align="left"
             eyebrow="A especialidade da casa"
-            title="Reparo e reformas de câmbio automático completo"
+            title="Reparo completo de câmbio automático"
             subtitle="Somos especialistas em transmissão automática."
           />
         </RevealOnScroll>
@@ -40,16 +39,15 @@ const whatsappUrl = buildUrl(
             :delay="i * STAGGER_STEP"
           >
             <li class="flex items-start gap-4">
-              <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gold-500/10 ring-1 ring-gold-500/30"
-              >
-                <component
-                  :is="resolveIcon(item.icon)"
-                  :size="20"
-                  class="text-gold-500"
-                  aria-hidden="true"
-                />
-              </div>
+              <img
+                :src="item.image"
+                :alt="item.imageAlt"
+                class="size-24 shrink-0 rounded-lg object-cover ring-1 ring-gold-500/30"
+                :style="{ objectPosition: item.imagePosition ?? 'center' }"
+                width="96"
+                height="96"
+                loading="lazy"
+              />
               <div>
                 <h3 class="text-base font-semibold text-white">{{ item.title }}</h3>
                 <p class="mt-1 text-sm text-neutral-400">{{ item.description }}</p>
@@ -77,6 +75,7 @@ const whatsappUrl = buildUrl(
         resto da pagina como full-bleed.
       -->
       <RevealOnScroll :delay="STAGGER_STEP">
+        <div>
         <div class="relative">
           <!--
             O inset acompanha o padding da <section> (px-4 sm:px-6) de
@@ -119,6 +118,23 @@ const whatsappUrl = buildUrl(
             variant="stamp"
             class="absolute right-4 -bottom-4 z-10 sm:-right-5 sm:-bottom-5"
           />
+        </div>
+
+        <!--
+          Abaixo da moldura, fora do `relative`: o carimbo transborda
+          ~20px (`-bottom-5`), e mt-10 deixa esse transbordo livre.
+        -->
+        <div class="mt-10 flex items-start gap-4">
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gold-500/10 ring-1 ring-gold-500/30"
+          >
+            <ShieldCheck :size="20" class="text-gold-500" aria-hidden="true" />
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-white">{{ transmissionWarranty.title }}</h3>
+            <p class="mt-1 text-sm text-neutral-400">{{ transmissionWarranty.description }}</p>
+          </div>
+        </div>
         </div>
       </RevealOnScroll>
     </div>

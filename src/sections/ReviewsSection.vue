@@ -36,7 +36,7 @@ function goTo(next: number) {
         <SectionHeading
           eyebrow="Quem já passou por aqui"
           title="Avaliações"
-          subtitle="O que os clientes escrevem na ficha do Google — nota 5,0 em 38 avaliações."
+          :subtitle="`O que os clientes escrevem na ficha do Google — nota ${googleRating.value.toFixed(1).replace('.', ',')} em ${googleRating.count} avaliações.`"
         />
       </RevealOnScroll>
 

@@ -54,16 +54,10 @@ function submit() {
 }
 
 /**
- * Embed sem API key, a partir do ENDERECO em texto (site.address.mapsQuery),
- * nao de coordenadas fixas — o Google geocodifica ao vivo dentro do iframe.
- * Antes usava uma coordenada hardcoded para "Ponta Grossa", cidade errada
- * (o endereco real e em Guarapuava — ver o comentario em site.ts). Query
- * de texto elimina esse tipo de erro: se o endereco mudar, e so trocar
- * site.address, sem precisar regeocodificar nada a mao.
+ * Embed sem API key, preso ao CID da ficha (o mesmo de site.googleMapsUrl).
+ * Busca por texto do endereco caia em outro ponto. 0xf64678b9e55c0b55 em decimal.
  */
-const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-  `${site.name}, ${site.address.mapsQuery}`,
-)}&z=16&output=embed`
+const mapEmbedSrc = 'https://www.google.com/maps?cid=17746004121512315733&z=17&output=embed'
 </script>
 
 <template>

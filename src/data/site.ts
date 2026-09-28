@@ -54,8 +54,6 @@ export const site = {
     city: 'Guarapuava',
     state: 'PR',
     zip: '85055-470',
-    /** Query usada no embed do Google Maps — texto do endereco, geocodificado ao vivo pelo Google. */
-    mapsQuery: 'Rua Rio Branco, 144, Conradinho, Guarapuava - PR, 85055-470',
   },
 
   /** PENDENTE: horario de funcionamento nao informado. */
@@ -81,11 +79,11 @@ export const site = {
   url: 'https://goldencarservice.com.br',
 
   /**
-   * Ficha no Google Maps. O `!9m1!1b1` abre direto na aba de avaliacoes.
-   * CID 0xf64678b9e55c0b55 — conferido na ficha publica da oficina.
+   * Ficha no Google Maps, o link que o cliente enviou.
+   * CID 0xf64678b9e55c0b55 — a mesma ficha publica da oficina.
    */
   googleMapsUrl:
-    'https://www.google.com/maps/place/Golden+Car+Service/@-25.3593592,-51.4648012,17z/data=!4m8!3m7!1s0x94ef37ab873424f1:0xf64678b9e55c0b55!8m2!3d-25.3593592!4d-51.4648012!9m1!1b1',
+    'https://www.google.com/maps/place/Golden+Car+Service/@-25.3593543,-51.4673761,17z/data=!3m1!4b1!4m6!3m5!1s0x94ef37ab873424f1:0xf64678b9e55c0b55!8m2!3d-25.3593592!4d-51.4648012!16s%2Fg%2F11z67lvsdn',
 } as const
 
 /** Endereco em uma linha, para footer e meta tags. */

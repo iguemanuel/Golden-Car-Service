@@ -19,14 +19,14 @@ import logo from '@/assets/logo.webp'
  * Substitui a reconstrucao em CSS que existia antes (texto + gradiente),
  * usada so porque o arquivo original estava em baixa resolucao.
  */
-withDefaults(defineProps<{ size?: 'sm' | 'md' }>(), { size: 'md' })
+withDefaults(defineProps<{ size?: 'sm' | 'md' | 'lg' }>(), { size: 'md' })
 </script>
 
 <template>
   <img
     :src="logo"
     :alt="site.name"
-    :class="size === 'sm' ? 'h-6' : 'h-8 sm:h-9'"
+    :class="size === 'sm' ? 'h-6' : size === 'lg' ? 'h-14 sm:h-16' : 'h-8 sm:h-9'"
     class="w-auto object-contain"
     width="700"
     height="173"

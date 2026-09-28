@@ -42,11 +42,11 @@ const mobileOpen = ref(false)
     "
   >
     <nav
-      class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
+      class="mx-auto flex h-24 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
       aria-label="Navegação principal"
     >
       <a href="#inicio" class="shrink-0" aria-label="Ir para o início">
-        <TheLogo />
+        <TheLogo size="lg" />
       </a>
 
       <!-- Links: escondidos no mobile, onde o menu vira drawer -->

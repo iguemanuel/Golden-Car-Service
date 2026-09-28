@@ -7,7 +7,7 @@ import { STAGGER_STEP } from '@/utils/motion'
 </script>
 
 <template>
-  <section id="servicos" class="scroll-mt-20 bg-ink-950 px-4 py-24 sm:px-6 lg:px-8">
+  <section id="servicos" class="scroll-mt-24 bg-ink-950 px-4 py-24 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
       <RevealOnScroll>
         <SectionHeading

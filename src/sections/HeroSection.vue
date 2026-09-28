@@ -22,7 +22,7 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
 </script>
 
 <template>
-  <section id="inicio" class="relative isolate overflow-hidden bg-ink-950 pt-20">
+  <section id="inicio" class="relative isolate overflow-hidden bg-ink-950 pt-24">
     <!--
       Foto de fundo em COR NATURAL, dividida em duas zonas (pedido explicito
       do cliente, com referencia visual: NAO um painel opaco — a MESMA foto,
@@ -122,10 +122,10 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
         <!-- Pill de categoria, como na referencia -->
         <RevealOnScroll>
           <p
-            class="inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-ink-900/70 px-4 py-1.5 backdrop-blur-sm"
+            class="inline-flex items-center gap-2.5 rounded-full border border-gold-500/30 bg-ink-900/70 px-5 py-2.5 backdrop-blur-sm"
           >
-            <span class="h-1.5 w-1.5 rounded-full bg-gold-500"></span>
-            <span class="font-display text-[11px] font-bold tracking-[0.18em] text-gold-400 uppercase">
+            <span class="h-2 w-2 rounded-full bg-gold-500"></span>
+            <span class="font-display text-sm font-bold tracking-[0.16em] text-gold-400 uppercase sm:text-base">
               {{ site.tagline }}
             </span>
           </p>
@@ -140,8 +140,11 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
 
         <RevealOnScroll :delay="STAGGER_STEP * 2">
           <p class="max-w-lg text-base text-neutral-300 sm:text-lg">
-            Troca de óleo com equipamento de fluxo, diagnóstico eletrônico e reparo completo de
-            câmbio — além de mecânica em geral, suspensão, motor, freios e performance.
+            Troca de óleo completa do câmbio automático com maquina, diagnósticos eletrônicos e reparo completo do
+            câmbio
+          </p>
+          <p class="max-w-lg text-base text-neutral-300 sm:text-lg">
+            além de mecânica em geral, suspensão, motor, freios e performance.
           </p>
         </RevealOnScroll>
 

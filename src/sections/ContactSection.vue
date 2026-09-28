@@ -146,7 +146,7 @@ const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
         </div>
       </RevealOnScroll>
 
-      <div id="contato" class="scroll-mt-20">
+      <div id="contato" class="scroll-mt-24">
       <!--
         Heading "Contato" colado ao formulario que ele introduz — nao ao
         topo da secao, onde ficaria acima da Oficina sem relacao com ela.

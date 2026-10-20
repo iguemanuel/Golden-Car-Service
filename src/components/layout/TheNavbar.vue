@@ -37,7 +37,7 @@ const mobileOpen = ref(false)
     class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
     :class="
       scrolled
-        ? 'border-b border-ink-700 bg-ink-950/90 backdrop-blur-md'
+        ? 'border-b border-ink-700 bg-ink-950/95'
         : 'border-b border-transparent'
     "
   >

@@ -1,6 +1,9 @@
 import oleo from '@/assets/imgs/hero-oleo.webp'
 import motor from '@/assets/imgs/hero-motor.webp'
 import freio from '@/assets/imgs/hero-freio.webp'
+import oleoBlur from '@/assets/imgs/hero-oleo-blur.webp'
+import motorBlur from '@/assets/imgs/hero-motor-blur.webp'
+import freioBlur from '@/assets/imgs/hero-freio-blur.webp'
 
 /**
  * Fotos que se alternam no fundo do hero.
@@ -19,9 +22,15 @@ import freio from '@/assets/imgs/hero-freio.webp'
  * "Mercedes-Benz" no frasco de oleo e "Audi ceramic" na pinca de freio —
  * o cliente revisou e autorizou o uso como esta.
  * Substituir por fotos reais da oficina assim que o cliente enviar.
+ *
+ * `blurSrc` e a metade esquerda do desktop: a mesma foto com 96px de
+ * largura e o desfoque ja aplicado. `filter: blur` ao vivo em tela cheia
+ * custava GPU a cada quadro de scroll e na troca de slide. Ao trocar uma
+ * foto, regenerar a versao desfocada:
+ *   magick hero-X.webp -resize 320x -blur 0x9 -resize 96x -quality 70 hero-X-blur.webp
  */
 export const heroSlides = [
-  { src: oleo, label: 'Troca de óleo' },
-  { src: motor, label: 'Diagnóstico de motor' },
-  { src: freio, label: 'Sistema de freios' },
+  { src: oleo, blurSrc: oleoBlur, label: 'Troca de óleo' },
+  { src: motor, blurSrc: motorBlur, label: 'Diagnóstico de motor' },
+  { src: freio, blurSrc: freioBlur, label: 'Sistema de freios' },
 ]

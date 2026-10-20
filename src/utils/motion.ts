@@ -11,7 +11,7 @@
  * para o site inteiro — antes cada secao tinha o seu (80 no Hero/Transmission,
  * 60 no Services, saltos ad-hoc no Reviews/Contact).
  */
-export const STAGGER_STEP = 80
+export const STAGGER_STEP = 50
 
 /**
  * True se o usuario pediu menos movimento no sistema operacional/navegador.

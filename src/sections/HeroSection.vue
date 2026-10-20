@@ -13,9 +13,7 @@ import { STAGGER_STEP } from '@/utils/motion'
 const { current, allowed, goTo } = useSlideshow(heroSlides.length)
 
 const { buildUrl } = useWhatsApp()
-const whatsappUrl = buildUrl(
-  `Olá! Vim pelo site da ${site.name} e gostaria de fazer um orçamento.`,
-)
+const whatsappUrl = buildUrl(`Olá! Vim pelo site da ${site.name} e gostaria de fazer um orçamento.`)
 
 /** Palavras-chave sob o CTA, no lugar de uma frase corrida. */
 const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
@@ -37,10 +35,11 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
       Mobile: foto nitida cobrindo o hero inteiro, sem clip-path (o filtro
       `lg:` so entra a partir do breakpoint) — o texto fica sobre ela com o
       veu simples do bloco seguinte.
-      Desktop (lg+): duas copias da MESMA foto (mesmo src, sem requisicao
-      extra) — uma nitida clipada na diagonal direita, outra borrada
-      (filter: blur) clipada no complemento exato a esquerda. A zona
-      esquerda inteira fica desfocada, nao so uma tira na juncao.
+      Desktop (lg+): duas versoes da MESMA foto — a nitida clipada na
+      diagonal direita, e a `blurSrc` (miniatura ja desfocada, ~4 KB)
+      clipada no complemento exato a esquerda. A zona esquerda inteira fica
+      desfocada, nao so uma tira na juncao. Sem `filter: blur` ao vivo: em
+      tela cheia ele pesava no scroll e na troca de slide.
     -->
     <div class="absolute inset-0 -z-10" aria-hidden="true">
       <!--
@@ -61,9 +60,9 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
         />
 
         <img
-          :src="slide.src"
+          :src="slide.blurSrc"
           alt=""
-          class="absolute inset-0 hidden h-full w-full object-cover blur-2xl transition-opacity duration-1000 ease-in-out lg:block lg:[clip-path:polygon(0_0,50%_0,40%_100%,0_100%)]"
+          class="absolute inset-0 hidden h-full w-full object-cover transition-opacity duration-1000 ease-in-out lg:block lg:[clip-path:polygon(0_0,50%_0,40%_100%,0_100%)]"
           :class="i === current ? 'opacity-100' : 'opacity-0'"
           width="1280"
           height="960"
@@ -125,7 +124,9 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
             class="inline-flex items-center gap-2.5 rounded-full border border-gold-500/30 bg-ink-900/70 px-5 py-2.5 backdrop-blur-sm"
           >
             <span class="h-2 w-2 rounded-full bg-gold-500"></span>
-            <span class="font-display text-sm font-bold tracking-[0.16em] text-gold-400 uppercase sm:text-base">
+            <span
+              class="font-display text-sm font-bold tracking-[0.16em] text-gold-400 uppercase sm:text-base"
+            >
               {{ site.tagline }}
             </span>
           </p>
@@ -144,11 +145,8 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
 
         <RevealOnScroll :delay="STAGGER_STEP * 3">
           <p class="max-w-lg text-base text-neutral-300 sm:text-lg">
-            Troca de óleo completa do câmbio automático com maquina, diagnósticos eletrônicos e reparo completo do
-            câmbio
-          </p>
-          <p class="max-w-lg text-base text-neutral-300 sm:text-lg">
-            além de mecânica em geral, suspensão, motor, freios e performance.
+            Troca de óleo completa do câmbio automático com máquina, diagnóstico eletrônico e reparo
+            completo do câmbio, além de mecânica em geral, suspensão, motor, freios e performance.
           </p>
         </RevealOnScroll>
 
@@ -178,7 +176,6 @@ const keywords = ['Câmbio automático', 'Mecânica geral', 'Performance']
             </li>
           </ul>
         </RevealOnScroll>
-
       </div>
     </div>
 

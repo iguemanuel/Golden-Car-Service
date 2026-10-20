@@ -20,9 +20,7 @@ import seloCab from '@/assets/selo-cab.webp'
  *    texto dentro dele ficam com ~7px — ilegiveis. O logo entra como
  *    marca reconhecivel; quem carrega a mensagem e o texto ao lado.
  *
- * PENDENTE: "Oficina credenciada" e uma afirmacao de credenciamento
- * formal junto a rede. Confirmar com a Erica antes de publicar — se for
- * parceria informal, trocar por "Membro da rede" (uma string, aqui).
+ * "Oficina associada": a oficina e associada a rede CAB (confirmado).
  */
 const props = withDefaults(defineProps<{ variant?: 'inline' | 'stamp' | 'hero' }>(), {
   variant: 'inline',
@@ -82,7 +80,7 @@ const styles = {
         class="block font-display font-bold tracking-[0.14em] text-gold-400 uppercase"
         :class="styles[props.variant].title"
       >
-        Oficina credenciada
+        Oficina associada
       </span>
       <span class="block text-neutral-400" :class="styles[props.variant].subtitle">
         Câmbio Automático do Brasil

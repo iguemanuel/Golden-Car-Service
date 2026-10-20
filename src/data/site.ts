@@ -84,6 +84,9 @@ export const site = {
    */
   googleMapsUrl:
     'https://www.google.com/maps/place/Golden+Car+Service/@-25.3593543,-51.4673761,17z/data=!3m1!4b1!4m6!3m5!1s0x94ef37ab873424f1:0xf64678b9e55c0b55!8m2!3d-25.3593592!4d-51.4648012!16s%2Fg%2F11z67lvsdn',
+
+  /** Site da CAB — Cambio Automatico do Brasil, rede da qual a oficina e associada. */
+  cabUrl: 'https://cambioautomaticodobrasil.com.br',
 } as const
 
 /** Endereco em uma linha, para footer e meta tags. */

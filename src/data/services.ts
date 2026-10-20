@@ -1,7 +1,7 @@
 import oficinaInterior from '@/assets/insta/oficina-interior.webp'
 import oficinaElevador from '@/assets/insta/oficina-elevador.webp'
-import capoAberto from '@/assets/imgs/servico-capo.webp'
-import oficinaEmbreagem from '@/assets/insta/oficina-embreagem.webp'
+import heroMotor from '@/assets/imgs/hero-motor.webp'
+import scannerPerformance from '@/assets/imgs/servico-performance.webp'
 import heroFreio from '@/assets/imgs/hero-freio.webp'
 import heroOleo from '@/assets/imgs/hero-oleo.webp'
 
@@ -12,8 +12,6 @@ import heroOleo from '@/assets/imgs/hero-oleo.webp'
  *
  * `image` fica na direita do card. `imagePosition` é o object-position:
  * no recorte estreito, o assunto tem que continuar reconhecível.
- * servico-capo.webp é o lado direito da foto do elevador — só o capô
- * aberto, para o card de Motor não repetir a coluna da Suspensão.
  */
 export interface Service {
   icon: string
@@ -48,9 +46,9 @@ export const services: Service[] = [
     title: 'Motor',
     description:
       'Manutenção preventiva e corretiva, com peças de qualidade e mão de obra especializada.',
-    image: capoAberto,
-    imageAlt: 'Capô aberto na oficina, com o motor do carro à vista',
-    imagePosition: 'center 42%',
+    image: heroMotor,
+    imageAlt: 'Motor do carro visto de perto, com o compartimento aberto',
+    imagePosition: '40% center',
   },
   {
     icon: 'Disc',
@@ -66,9 +64,9 @@ export const services: Service[] = [
     title: 'Performance',
     description:
       'Ajustes para quem quer mais do carro — sem abrir mão da confiabilidade no dia a dia.',
-    image: oficinaEmbreagem,
-    imageAlt: 'Platô de embreagem aberto na oficina',
-    imagePosition: 'center',
+    image: scannerPerformance,
+    imageAlt: 'Scanner automotivo nas mãos do mecânico, sobre o motor aberto',
+    imagePosition: '62% center',
   },
   {
     icon: 'Droplet',

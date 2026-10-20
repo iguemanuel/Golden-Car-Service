@@ -8,6 +8,10 @@ import ReviewCard from '@/components/ui/ReviewCard.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import { googleRating, reviews, reviewsPageSize } from '@/data/reviews'
 import { STAGGER_STEP } from '@/utils/motion'
+import { useGoogleRating } from '@/composables/useGoogleRating'
+
+const { value: ratingValue, count: ratingCount } = useGoogleRating()
+const ratingLabel = computed(() => ratingValue.value.toFixed(1).replace('.', ','))
 
 const page = ref(1)
 const direction = ref<'next' | 'prev'>('next')
@@ -36,30 +40,21 @@ function goTo(next: number) {
         <SectionHeading
           eyebrow="Quem já passou por aqui"
           title="Avaliações"
-          :subtitle="`O que os clientes escrevem na ficha do Google — nota ${googleRating.value.toFixed(1).replace('.', ',')} em ${googleRating.count} avaliações.`"
+          :subtitle="`O que os clientes escrevem na ficha do Google — nota ${ratingLabel} em ${ratingCount} avaliações.`"
         />
       </RevealOnScroll>
 
       <RevealOnScroll :delay="STAGGER_STEP">
-        <div
-          class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8"
-        >
+        <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8">
           <p class="flex items-baseline gap-2">
             <span class="font-display text-5xl font-extrabold text-gradient-gold">{{
-              googleRating.value.toFixed(1).replace('.', ',')
+              ratingLabel
             }}</span>
             <span class="flex gap-0.5" aria-hidden="true">
-              <Star
-                v-for="n in 5"
-                :key="n"
-                :size="16"
-                class="fill-gold-500 text-gold-500"
-              />
+              <Star v-for="n in 5" :key="n" :size="16" class="fill-gold-500 text-gold-500" />
             </span>
           </p>
-          <p class="text-sm text-neutral-400">
-            {{ googleRating.count }} avaliações no Google
-          </p>
+          <p class="text-sm text-neutral-400">{{ ratingCount }} avaliações no Google</p>
         </div>
       </RevealOnScroll>
 
@@ -77,10 +72,7 @@ function goTo(next: number) {
       <RevealOnScroll :delay="STAGGER_STEP * 2" class="mt-12">
         <div class="relative min-h-64 overflow-hidden">
           <Transition :name="transitionName" mode="out-in">
-            <div
-              :key="page"
-              class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-            >
+            <div :key="page" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               <ReviewCard v-for="review in pageReviews" :key="review.name" :review="review" />
             </div>
           </Transition>

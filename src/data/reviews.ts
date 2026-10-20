@@ -4,7 +4,7 @@ import { site } from '@/data/site'
  * Avaliacoes exibidas na secao (somente 5 estrelas).
  *
  * Todas reais, vindas da ficha publica do Google (5,0; o total
- * exibido e 40+, arredondado de proposito) — as
+ * exibido e 60+, arredondado de proposito) — as
  * sete primeiras de uma busca em set/2026, as demais de uma busca
  * posterior na mesma ficha. Nenhuma foi inventada para preencher pagina.
  *
@@ -23,7 +23,7 @@ export interface Review {
 
 export const googleRating = {
   value: 5.0,
-  count: '40+',
+  count: '60+',
   url: site.googleMapsUrl,
 } as const
 
